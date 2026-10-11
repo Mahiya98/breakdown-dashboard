@@ -59,6 +59,25 @@
   .banner { background:#fffbeb; border:1px solid #fde68a; color:#92400e; border-radius:10px; padding:10px 14px; font-size:12.5px; margin-bottom:14px; }
   .bar-wrap { background:#eef1f5; border-radius:6px; height:9px; overflow:hidden; min-width:60px; }
   .bar { height:100%; border-radius:6px; background:var(--primary); }
+
+  .vis { padding:2px; }
+  .sbu-block { margin-bottom:16px; }
+  .sbu-block:last-child { margin-bottom:0; }
+  .sbu-head { display:flex; align-items:baseline; gap:10px; margin:0 0 8px; padding:7px 12px; background:#eef2ff; border-radius:8px; }
+  .sbu-head .sbu-name { font-weight:800; color:#3730a3; font-size:14.5px; }
+  .sbu-head .sbu-swatch { width:12px; height:12px; border-radius:3px; display:inline-block; align-self:center; }
+  .sbu-head .sbu-meta { margin-left:auto; color:#4338ca; font-size:12px; font-weight:600; }
+  .mach-row { display:grid; grid-template-columns:200px 1fr 78px 64px minmax(150px,1.3fr); gap:10px; align-items:center; padding:5px 12px; border-radius:6px; }
+  .mach-row + .mach-row { margin-top:2px; }
+  .mach-row:hover { background:#f4f7fc; }
+  .mach-name { font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .mach-bar { background:#eef1f5; border-radius:6px; height:16px; overflow:hidden; }
+  .mach-fill { height:100%; border-radius:6px; min-width:2px; transition:width .3s ease; }
+  .mach-val { text-align:right; font-variant-numeric:tabular-nums; font-weight:700; }
+  .mach-ev { text-align:right; color:var(--muted); font-variant-numeric:tabular-nums; font-size:12px; }
+  .mach-reason { color:var(--muted); font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .mach-head { color:var(--muted); font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; font-weight:700; }
+  @media (max-width:760px){ .mach-row { grid-template-columns:120px 1fr 60px; } .mach-reason,.mach-ev { display:none; } }
 </style>
 </head>
 <body>
@@ -102,7 +121,7 @@
   <div class="card">
     <h2>Breakdown by SBU &amp; Machine <span class="muted small" id="groupCount"></span></h2>
     <p class="sub">Every SBU with each of its machines: events, downtime and the top reason for the day.</p>
-    <div class="scroll" id="sbuMachineTable"></div>
+    <div id="sbuMachineTable"></div>
   </div>
 
   <div class="card">
@@ -213,37 +232,52 @@ function renderGroupTable(list){
   });
 
   const sbus = [...bySbu.keys()].sort();
-  let totalGroups = 0;
-  let html = '<table><thead><tr><th>SBU / Machine</th><th class="numcol">Events</th><th class="numcol">Downtime (min)</th><th class="numcol">Downtime (h)</th><th>Top Reason</th><th style="width:120px">Share</th></tr></thead><tbody>';
-  if (!sbus.length) html += '<tr><td colspan="6" class="muted">No breakdowns recorded for the day.</td></tr>';
-
   const grandDt = list.reduce((s, r) => s + r.downtime, 0) || 1;
-  for (const s of sbus){
+  let totalGroups = 0;
+
+  // build per-SBU machine aggregation first (so we can scale bars to a global max)
+  const blocks = sbus.map((s, si) => {
     const group = bySbu.get(s);
     const sDt = group.reduce((a, r) => a + r.downtime, 0);
-    html += `<tr class="grp"><td>${esc(s)}</td><td class="numcol">${fmt(group.length)}</td><td class="numcol">${fmt(sDt)}</td><td class="numcol">${hrsStr(sDt)}</td><td></td><td></td></tr>`;
-    const byMachine = new Map();
+    const mMap = new Map();
     group.forEach(r => {
       const k = r.machine || '(blank)';
-      const o = byMachine.get(k) || { dt: 0, c: 0, rows: [] };
+      const o = mMap.get(k) || { dt: 0, c: 0, rows: [] };
       o.dt += r.downtime; o.c++; o.rows.push(r);
-      byMachine.set(k, o);
+      mMap.set(k, o);
     });
-    const machines = [...byMachine.entries()].sort((a, b) => b[1].dt - a[1].dt);
-    for (const [mach, o] of machines){
-      totalGroups++;
-      const pct = (100 * o.dt / grandDt).toFixed(1);
-      html += `<tr>
-        <td style="padding-left:26px">${esc(mach)}</td>
-        <td class="numcol">${o.c}</td>
-        <td class="numcol">${fmt(o.dt)}</td>
-        <td class="numcol">${hrsStr(o.dt)}</td>
-        <td title="${esc(topReason(o.rows))}">${esc(topReason(o.rows))}</td>
-        <td><div class="bar-wrap"><div class="bar" style="width:${pct}%"></div></div></td>
-      </tr>`;
+    const machines = [...mMap.entries()].map(([name, o]) => ({ name, ...o })).sort((a, b) => b.dt - a.dt);
+    totalGroups += machines.length;
+    return { s, sDt, count: group.length, machines, color: PALETTE[si % PALETTE.length] };
+  });
+
+  let maxDt = 1;
+  blocks.forEach(b => b.machines.forEach(m => { if (m.dt > maxDt) maxDt = m.dt; }));
+
+  let html = '<div class="vis">';
+  if (!blocks.length) html += '<div class="muted">No breakdowns recorded for the day.</div>';
+  for (const b of blocks){
+    html += `<div class="sbu-block">
+      <div class="sbu-head">
+        <span class="sbu-swatch" style="background:${b.color}"></span>
+        <span class="sbu-name">${esc(b.s)}</span>
+        <span class="sbu-meta">${b.machines.length} machine(s) · ${fmt(b.count)} events · ${hrsStr(b.sDt)} h · ${(100*b.sDt/grandDt).toFixed(1)}% of downtime</span>
+      </div>
+      <div class="mach-row mach-head"><div>Machine</div><div></div><div class="mach-val">Hours</div><div class="mach-ev">Events</div><div>Top reason</div></div>`;
+    for (const m of b.machines){
+      const w = Math.max(2, 100 * m.dt / maxDt);
+      const reason = topReason(m.rows);
+      html += `<div class="mach-row">
+        <div class="mach-name" title="${esc(m.name)}">${esc(m.name)}</div>
+        <div class="mach-bar"><div class="mach-fill" style="width:${w}%;background:${b.color}"></div></div>
+        <div class="mach-val">${hrsStr(m.dt)}</div>
+        <div class="mach-ev">${m.c}</div>
+        <div class="mach-reason" title="${esc(reason)}">${esc(reason)}</div>
+      </div>`;
     }
+    html += '</div>';
   }
-  html += '</tbody></table>';
+  html += '</div>';
   document.getElementById('sbuMachineTable').innerHTML = html;
   document.getElementById('groupCount').textContent = '(' + totalGroups + ' machines across ' + sbus.length + ' SBUs)';
 }
