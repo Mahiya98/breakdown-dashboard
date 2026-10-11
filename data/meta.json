@@ -1,13 +1,8 @@
 {
-  "generated": "2026-10-11T10:47:54.234Z",
-  "totalRows": 60233,
-  "totalDowntime": 13560737.691000102,
+  "generated": "2026-10-11T10:49:51.065Z",
+  "totalRows": 54094,
+  "totalDowntime": 13249122.691000102,
   "sheets": [
-    {
-      "sheet": "Rolling Breakdown",
-      "rows": 6139,
-      "downtime": 311615
-    },
     {
       "sheet": "SMS Breakdown",
       "rows": 7861,
@@ -102,7 +97,6 @@
     "PACKER-05",
     "Packaging Line",
     "Processing line",
-    "Rolling",
     "Sorting Side-1",
     "Sorting Side-2",
     "Unit-1 Tapeline",
@@ -124,7 +118,6 @@
     "Raw Material Shortage",
     "Unavailable Order",
     "Utility (Electricity)",
-    "Utility (Gas)",
     "Warehouse block"
   ],
   "years": [
