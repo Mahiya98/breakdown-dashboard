@@ -242,6 +242,23 @@ function canonicalize(field) {
 }
 ['machine', 'breakdownType', 'shift', 'sbu'].forEach(canonicalize);
 
+// ---------- "yesterday" daily report ----------
+const pad = (n) => String(n).padStart(2, '0');
+const now = new Date();
+const yest = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+const yestTs = Date.UTC(yest.getFullYear(), yest.getMonth(), yest.getDate());
+
+let reportTs = yestTs;
+let fallback = false;
+let reportRows = all.filter((r) => r.ts === yestTs);
+if (!reportRows.length) {
+  const dates = [...new Set(all.map((r) => r.ts).filter((t) => t != null && t <= yestTs))].sort((a, b) => b - a);
+  if (dates.length) { reportTs = dates[0]; fallback = true; reportRows = all.filter((r) => r.ts === reportTs); }
+}
+const rd = new Date(reportTs);
+const reportDate = rd.getUTCFullYear() + '-' + pad(rd.getUTCMonth() + 1) + '-' + pad(rd.getUTCDate());
+const reportLabel = rd.toLocaleDateString('en-GB', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' });
+
 const sbuList = [...new Set(all.map((r) => r.sbu))].filter(Boolean).sort();
 const machineList = [...new Set(all.map((r) => r.machine))].filter(Boolean).sort();
 const typeList = [...new Set(all.map((r) => r.breakdownType))].filter(Boolean).sort();
@@ -257,10 +274,19 @@ const meta = {
   machines: machineList,
   types: typeList,
   years: yearList,
+  reportDate,
+  reportLabel,
+  reportFallback: fallback,
+  reportRows: reportRows.length,
 };
 
 writeFileSync(`${DATA_DIR}\\data.json`, JSON.stringify(all));
 writeFileSync(`${DATA_DIR}\\meta.json`, JSON.stringify(meta, null, 2));
+writeFileSync(`${DATA_DIR}\\report.json`, JSON.stringify({ generated: meta.generated, reportDate, reportLabel, fallback, rows: reportRows }));
+
+console.log('\n== YESTERDAY REPORT ==');
+console.log('Report day:', reportDate, '(' + reportLabel + ')' + (fallback ? ' [fallback: no data for yesterday]' : ''));
+console.log('Rows:', reportRows.length);
 
 console.log('\n== SUMMARY ==');
 console.log('Total rows:', all.length);

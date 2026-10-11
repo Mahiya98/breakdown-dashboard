@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Breakdown Analysis Dashboard</title>
+<title>Yesterday's Breakdown Dashboard</title>
 <script src="./vendor/chart.umd.min.js"></script>
 <style>
   :root {
     --bg:#f1f4f9; --card:#ffffff; --border:#e2e8f0; --text:#1e293b; --muted:#64748b;
-    --primary:#2563eb; --indigo:#4f46e5; --green:#16a34a; --red:#dc2626; --amber:#d97706;
-    --cyan:#0891b2; --pink:#db2777; --violet:#7c3aed;
+    --primary:#2563eb; --green:#16a34a; --red:#dc2626; --amber:#d97706; --violet:#7c3aed; --cyan:#0891b2;
   }
   * { box-sizing:border-box; }
   body { margin:0; font-family:'Segoe UI','Roboto',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); font-size:14px; }
@@ -20,59 +19,56 @@
 
   .filters { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; background:var(--card);
     border:1px solid var(--border); border-radius:12px; padding:14px 16px; margin-bottom:14px; box-shadow:0 1px 2px rgba(15,23,42,.04); }
-  .filters .field { display:flex; flex-direction:column; gap:4px; min-width:130px; }
+  .filters .field { display:flex; flex-direction:column; gap:4px; min-width:180px; }
   .filters label { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
-  .filters select, .filters input { padding:8px 10px; border:1px solid var(--border); border-radius:8px; font-size:13px; background:#fff; color:var(--text); }
-  .filters select:focus, .filters input:focus { outline:2px solid #bfdbfe; border-color:var(--primary); }
+  .filters select { padding:8px 10px; border:1px solid var(--border); border-radius:8px; font-size:13px; background:#fff; color:var(--text); }
+  .filters select:focus { outline:2px solid #bfdbfe; border-color:var(--primary); }
   .filters .actions { display:flex; gap:8px; margin-left:auto; align-items:center; }
-  .btn { padding:8px 14px; border:1px solid var(--border); border-radius:8px; background:#fff; cursor:pointer; font-size:13px; font-weight:600; color:var(--text); white-space:nowrap; }
+  .btn { padding:8px 14px; border:1px solid var(--border); border-radius:8px; background:#fff; cursor:pointer; font-size:13px; font-weight:600; color:var(--text); }
   .btn:hover { background:#f0f3f7; }
   .btn.primary { background:var(--primary); color:#fff; border-color:var(--primary); }
   .btn.primary:hover { background:#1d4ed8; }
-  .btn.ghost { background:#fff; }
 
   .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:14px; }
   .kpi { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px; box-shadow:0 1px 2px rgba(15,23,42,.04); }
   .kpi .num { font-size:24px; font-weight:800; line-height:1.1; }
   .kpi .lbl { font-size:11px; color:var(--muted); margin-top:4px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; }
   .kpi .sub2 { font-size:11px; color:var(--muted); margin-top:2px; }
-  .kpi.blue .num { color:var(--primary); } .kpi.red .num { color:var(--red); }
-  .kpi.green .num { color:var(--green); } .kpi.amber .num { color:var(--amber); }
-  .kpi.violet .num { color:var(--violet); } .kpi.cyan .num { color:var(--cyan); }
+  .kpi.blue .num{color:var(--primary);} .kpi.red .num{color:var(--red);} .kpi.green .num{color:var(--green);}
+  .kpi.amber .num{color:var(--amber);} .kpi.violet .num{color:var(--violet);} .kpi.cyan .num{color:var(--cyan);}
 
   .grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  .grid.three { grid-template-columns:1fr 1fr 1fr; }
-  @media (max-width:1000px){ .grid, .grid.three { grid-template-columns:1fr; } }
+  @media (max-width:1000px){ .grid { grid-template-columns:1fr; } }
   .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; margin-bottom:14px; box-shadow:0 1px 2px rgba(15,23,42,.04); }
   .card h2 { margin:0 0 4px; font-size:15px; }
   .card .sub { color:var(--muted); font-size:12px; margin:0 0 12px; }
-  .chart-box { position:relative; height:300px; }
-  .chart-box.tall { height:360px; }
+  .chart-box { position:relative; height:320px; }
+  .chart-box.tall { height:420px; }
 
   table { width:100%; border-collapse:collapse; }
   th,td { text-align:left; padding:7px 10px; border-bottom:1px solid var(--border); vertical-align:top; font-size:13px; }
   th { font-size:11px; text-transform:uppercase; letter-spacing:.03em; color:var(--muted); position:sticky; top:0; background:var(--card); z-index:1; }
   tbody tr:hover { background:#f8fafc; }
+  tr.grp td { background:#eef2ff; font-weight:700; color:#3730a3; font-size:12.5px; }
   .numcol { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
-  .scroll { max-height:400px; overflow:auto; border:1px solid var(--border); border-radius:8px; }
+  .scroll { max-height:460px; overflow:auto; border:1px solid var(--border); border-radius:8px; }
   .muted { color:var(--muted); }
   .small { font-size:12px; }
   .mono { font-family:ui-monospace,Consolas,monospace; }
   .tag { display:inline-block; padding:1px 7px; border-radius:5px; background:#eef2ff; font-size:11px; margin:1px 2px; color:#4338ca; }
   .banner { background:#fffbeb; border:1px solid #fde68a; color:#92400e; border-radius:10px; padding:10px 14px; font-size:12.5px; margin-bottom:14px; }
-  .flex { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .bar-wrap { background:#eef1f5; border-radius:6px; height:9px; overflow:hidden; min-width:60px; }
+  .bar { height:100%; border-radius:6px; background:var(--primary); }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <div>
-      <h1>Breakdown Analysis Dashboard</h1>
-      <p id="subtitle">Machine downtime breakdown across all SBUs, mills &amp; machines.</p>
+      <h1>Yesterday's Breakdown Dashboard</h1>
+      <p id="subtitle">Machine downtime breakdown for each SBU &amp; machine.</p>
     </div>
-    <div class="flex">
-      <span class="muted small" id="generated"></span>
-    </div>
+    <span class="muted small" id="generated"></span>
   </header>
 
   <div id="banner"></div>
@@ -81,34 +77,6 @@
     <div class="field">
       <label for="fSbu">SBU</label>
       <select id="fSbu"><option value="All">All SBUs</option></select>
-    </div>
-    <div class="field">
-      <label for="fMachine">Mill / Machine</label>
-      <select id="fMachine"><option value="All">All Machines</option></select>
-    </div>
-    <div class="field">
-      <label for="fType">Breakdown Type</label>
-      <select id="fType"><option value="All">All Types</option></select>
-    </div>
-    <div class="field">
-      <label for="fYear">Year</label>
-      <select id="fYear"><option value="All">All Years</option></select>
-    </div>
-    <div class="field">
-      <label for="fMonth">Month</label>
-      <select id="fMonth"><option value="All">All Months</option></select>
-    </div>
-    <div class="field">
-      <label for="fFrom">Date From</label>
-      <input type="date" id="fFrom">
-    </div>
-    <div class="field">
-      <label for="fTo">Date To</label>
-      <input type="date" id="fTo">
-    </div>
-    <div class="field" style="min-width:180px">
-      <label for="fSearch">Search</label>
-      <input type="text" id="fSearch" placeholder="reason / machine / operator">
     </div>
     <div class="actions">
       <button class="btn" id="resetBtn">Reset</button>
@@ -119,144 +87,52 @@
   <div class="kpis" id="kpis"></div>
 
   <div class="grid" id="topGrid">
-    <div class="card" id="cardType">
-      <h2>Downtime by Breakdown Type</h2>
-      <p class="sub">Total downtime (hours) contributed by each breakdown type — updates with filters.</p>
-      <div class="chart-box"><canvas id="chType"></canvas></div>
+    <div class="card" id="cardMachine">
+      <h2>Downtime by Machine</h2>
+      <p class="sub">Total downtime (hours) per machine / mill.</p>
+      <div class="chart-box tall"><canvas id="chMachine"></canvas></div>
     </div>
     <div class="card" id="cardSbu">
       <h2>Downtime by SBU</h2>
-      <p class="sub">Which SBU accumulates the most downtime.</p>
-      <div class="chart-box"><canvas id="chSbu"></canvas></div>
-    </div>
-    <div class="card" id="cardReasonTime">
-      <h2>Breakdown Reason vs Downtime over Time</h2>
-      <p class="sub">Top reasons (by downtime hours) for the selected SBU &amp; breakdown type, month by month.</p>
-      <div class="chart-box tall"><canvas id="chReasonTime"></canvas></div>
-    </div>
-  </div>
-
-  <div class="grid">
-    <div class="card">
-      <h2>Top 15 Machines / Mills by Downtime</h2>
-      <p class="sub">Highest-downtime machines (hours).</p>
-      <div class="chart-box tall"><canvas id="chMachine"></canvas></div>
-    </div>
-    <div class="card">
-      <h2>Monthly Downtime Trend</h2>
-      <p class="sub">Total downtime (hours) per month over time.</p>
-      <div class="chart-box tall"><canvas id="chTrend"></canvas></div>
-    </div>
-  </div>
-
-  <div class="grid">
-    <div class="card">
-      <h2>Breakdown Event Share</h2>
-      <p class="sub">Number of events (%) by breakdown type.</p>
-      <div class="chart-box"><canvas id="chShare"></canvas></div>
-    </div>
-    <div class="card">
-      <h2>Shift-wise Downtime</h2>
-      <p class="sub">Total downtime (hours) per shift.</p>
-      <div class="chart-box"><canvas id="chShift"></canvas></div>
-    </div>
-  </div>
-
-  <div class="grid">
-    <div class="card">
-      <h2>Top Breakdown Reasons <span class="muted small" id="reasonCount"></span></h2>
-      <p class="sub">Ranked by total downtime (hours).</p>
-      <div class="scroll" id="reasonTable"></div>
-    </div>
-    <div class="card">
-      <h2>Top Breakdown Names / Equipment <span class="muted small" id="nameCount"></span></h2>
-      <p class="sub">Ranked by total downtime (hours).</p>
-      <div class="scroll" id="nameTable"></div>
+      <p class="sub">Total downtime (hours) per SBU.</p>
+      <div class="chart-box tall"><canvas id="chSbu"></canvas></div>
     </div>
   </div>
 
   <div class="card">
-    <h2>Downtime by Sheet <span class="muted small" id="sheetCount"></span></h2>
-    <p class="sub">Contribution of each source sheet after filtering.</p>
-    <div class="scroll" id="sheetTable"></div>
+    <h2>Breakdown by SBU &amp; Machine <span class="muted small" id="groupCount"></span></h2>
+    <p class="sub">Every SBU with each of its machines: events, downtime and the top reason for the day.</p>
+    <div class="scroll" id="sbuMachineTable"></div>
   </div>
 
   <div class="card">
-    <h2>Record Detail <span class="muted small" id="detailCount"></span></h2>
-    <p class="sub">Filtered records (most recent first). Showing up to 500 rows.</p>
+    <h2>Breakdown Detail <span class="muted small" id="detailCount"></span></h2>
+    <p class="sub">All breakdown records for the day.</p>
     <div class="scroll" id="detailTable"></div>
   </div>
 </div>
 
 <script>
-const META_PLACEHOLDER = /*__META__*/{};
-const DATA_PLACEHOLDER = /*__DATA__*/[];
-let DATA = [];
+let REPORT = { rows: [], reportLabel: '', reportDate: '', fallback: false };
 let META = {};
-if (DATA_PLACEHOLDER && DATA_PLACEHOLDER.length) DATA = DATA_PLACEHOLDER;
-if (META_PLACEHOLDER && META_PLACEHOLDER.generated) META = META_PLACEHOLDER;
 
-const state = { sbu:'All', machine:'All', type:'All', year:'All', month:'All', from:'', to:'', search:'' };
-const MONTH_ABBR = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const state = { sbu: 'All' };
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const fmt = (n) => Math.round(n).toLocaleString();
-const hrs = (min) => (min/60);
-const hrsStr = (min) => (min/60).toLocaleString(undefined,{minimumFractionDigits:1,maximumFractionDigits:1});
+const hrs = (min) => min / 60;
+const hrsStr = (min) => (min / 60).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
-// ---------- filters ----------
-function populateFilters(){
-  const el = (id) => document.getElementById(id);
-  const addOpt = (sel, val, label) => { const o=document.createElement('option'); o.value=val; o.textContent=label; sel.appendChild(o); };
-  META.sbus.forEach(s => addOpt(el('fSbu'), s, s));
-  META.types.forEach(t => addOpt(el('fType'), t, t));
-  META.years.forEach(y => addOpt(el('fYear'), y, y));
-  const months = [...new Set(DATA.map(r => r.month).filter(m => m))].sort((a,b)=>a-b);
-  months.forEach(m => addOpt(el('fMonth'), m, MONTH_ABBR[m] || m));
-  refreshMachineOptions();
-}
+function rows(){ const all = REPORT.rows || []; return state.sbu === 'All' ? all : all.filter(r => r.sbu === state.sbu); }
 
-function refreshMachineOptions(){
-  const sel = document.getElementById('fMachine');
-  const cur = state.machine;
-  sel.innerHTML = '<option value="All">All Machines</option>';
-  const pool = DATA.filter(r => state.sbu==='All' || r.sbu===state.sbu);
-  const list = [...new Set(pool.map(r=>r.machine).filter(Boolean))].sort();
-  list.forEach(m => { const o=document.createElement('option'); o.value=m; o.textContent=m; sel.appendChild(o); });
-  if (list.includes(cur)) sel.value = cur; else { state.machine='All'; sel.value='All'; }
-}
-
-function passes(r){
-  if (state.sbu!=='All' && r.sbu!==state.sbu) return false;
-  if (state.machine!=='All' && r.machine!==state.machine) return false;
-  if (state.type!=='All' && r.breakdownType!==state.type) return false;
-  if (state.year!=='All' && String(r.year)!==String(state.year)) return false;
-  if (state.month!=='All' && String(r.month)!==String(state.month)) return false;
-  if (state.from && r.ts!=null && r.ts < Date.parse(state.from)) return false;
-  if (state.to && r.ts!=null && r.ts > Date.parse(state.to)+86399999) return false;
-  if (state.search){
-    const q = state.search.toLowerCase();
-    const hay = (r.reason+' '+r.breakdownName+' '+r.machine+' '+r.operator+' '+r.breakdownType+' '+r.sbu).toLowerCase();
-    if (!hay.includes(q)) return false;
-  }
-  return true;
-}
-function filtered(){ return DATA.filter(passes); }
-
-// ---------- aggregation ----------
-function groupSum(rows, keyFn){
+function groupSum(list, keyFn){
   const m = new Map();
-  rows.forEach(r => { const k = keyFn(r) || '(blank)'; m.set(k, (m.get(k)||0) + r.downtime); });
-  return [...m.entries()].map(([k,v])=>({k,v})).sort((a,b)=>b.v-a.v);
-}
-function groupCount(rows, keyFn){
-  const m = new Map();
-  rows.forEach(r => { const k = keyFn(r) || '(blank)'; m.set(k, (m.get(k)||0) + 1); });
-  return [...m.entries()].map(([k,v])=>({k,v})).sort((a,b)=>b.v-a.v);
+  list.forEach(r => { const k = keyFn(r) || '(blank)'; m.set(k, (m.get(k) || 0) + r.downtime); });
+  return [...m.entries()].map(([k, v]) => ({ k, v })).sort((a, b) => b.v - a.v);
 }
 
 // ---------- charts ----------
 const charts = {};
-const PALETTE = ['#2563eb','#16a34a','#d97706','#dc2626','#7c3aed','#0891b2','#db2777','#65a30d','#4f46e5','#ea580c','#0d9488','#9333ea','#ca8a04','#e11d48','#0369a1'];
+const PALETTE = ['#2563eb','#16a34a','#d97706','#dc2626','#7c3aed','#0891b2','#db2777','#65a30d','#4f46e5','#ea580c','#0d9488','#9333ea'];
 Chart.defaults.font.family = "'Segoe UI','Roboto',system-ui,sans-serif";
 Chart.defaults.color = '#475569';
 
@@ -265,188 +141,127 @@ function makeBar(id, labels, values, color, horizontal){
   if (charts[id]) charts[id].destroy();
   charts[id] = new Chart(ctx, {
     type:'bar',
-    data:{ labels, datasets:[{ data:values, backgroundColor: color||'#2563eb', borderRadius:5, borderSkipped:false }] },
-    options:{
-      responsive:true, maintainAspectRatio:false, indexAxis: horizontal?'y':'x',
-      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:(c)=> ' + ' + Number(c.parsed[horizontal?'x':'y']).toLocaleString(undefined,{maximumFractionDigits:1}) + ' h' } } },
+    data:{ labels, datasets:[{ data: values, backgroundColor: color, borderRadius:5, borderSkipped:false }] },
+    options:{ responsive:true, maintainAspectRatio:false, indexAxis: horizontal ? 'y' : 'x',
+      plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label:(c)=> ' ' + Number(c.parsed[horizontal?'x':'y']).toLocaleString(undefined,{maximumFractionDigits:1}) + ' h' } } },
       scales: horizontal
-        ? { x:{ beginAtZero:true, grid:{color:'#eef2f7'}, ticks:{ callback:v=>v.toLocaleString() } }, y:{ grid:{display:false} } }
-        : { y:{ beginAtZero:true, grid:{color:'#eef2f7'}, ticks:{ callback:v=>v.toLocaleString() } }, x:{ grid:{display:false} } }
-    }
-  });
-}
-function makeLine(id, labels, values){
-  const ctx = document.getElementById(id);
-  if (charts[id]) charts[id].destroy();
-  charts[id] = new Chart(ctx, {
-    type:'line',
-    data:{ labels, datasets:[{ data:values, borderColor:'#2563eb', backgroundColor:'rgba(37,99,235,.12)', fill:true, tension:.3, pointRadius:3, pointBackgroundColor:'#2563eb' }] },
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:(c)=>' '+Number(c.parsed.y).toLocaleString(undefined,{maximumFractionDigits:1})+' h' } } },
-      scales:{ y:{ beginAtZero:true, grid:{color:'#eef2f7'}, ticks:{callback:v=>v.toLocaleString()} }, x:{ grid:{display:false} } } }
-  });
-}
-function makeDoughnut(id, labels, values){
-  const ctx = document.getElementById(id);
-  if (charts[id]) charts[id].destroy();
-  charts[id] = new Chart(ctx, {
-    type:'doughnut',
-    data:{ labels, datasets:[{ data:values, backgroundColor: PALETTE, borderWidth:2, borderColor:'#fff' }] },
-    options:{ responsive:true, maintainAspectRatio:false, cutout:'55%',
-      plugins:{ legend:{ position:'right', labels:{boxWidth:12, font:{size:11}} }, tooltip:{ callbacks:{ label:(c)=>{ const tot=c.dataset.data.reduce((a,b)=>a+b,0); return ' '+c.label+': '+c.parsed+' ('+(100*c.parsed/(tot||1)).toFixed(1)+'%)'; } } } } }
-  });
-}
-
-function makeStackedBar(id, labels, series){
-  const ctx = document.getElementById(id);
-  if (charts[id]) charts[id].destroy();
-  charts[id] = new Chart(ctx, {
-    type:'bar',
-    data:{ labels, datasets: series.map(s => ({ label: s.label, data: s.data, backgroundColor: s.color, stack:'s', borderRadius:2 })) },
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{
-        legend:{ position:'bottom', labels:{ boxWidth:12, font:{size:11}, padding:10 } },
-        tooltip:{ mode:'index', callbacks:{ label:(c)=> ' '+c.dataset.label+': '+Number(c.parsed.y).toLocaleString(undefined,{maximumFractionDigits:1})+' h' } }
-      },
-      scales:{
-        x:{ stacked:true, grid:{display:false} },
-        y:{ stacked:true, beginAtZero:true, grid:{color:'#eef2f7'}, ticks:{callback:v=>v.toLocaleString()}, title:{display:true, text:'Downtime (h)'} }
-      }
+        ? { x:{ beginAtZero:true, grid:{color:'#eef2f7'}, ticks:{callback:v=>v.toLocaleString()} }, y:{ grid:{display:false} } }
+        : { y:{ beginAtZero:true, grid:{color:'#eef2f7'}, ticks:{callback:v=>v.toLocaleString()} }, x:{ grid:{display:false} } }
     }
   });
 }
 
-const shortYm = (k) => { const p = String(k).split('-'); return (MONTH_ABBR[+p[1]] || p[1]) + ' ' + String(p[0]).slice(2); };
-const trimLabel = (s) => s.length > 30 ? s.slice(0,30)+'…' : s;
-
-function setCard(id, visible, full){
+function setCard(id, visible){
   const el = document.getElementById(id);
-  if (!el) return;
-  el.style.display = visible ? '' : 'none';
-  el.style.gridColumn = (visible && full) ? '1 / -1' : '';
+  if (el) el.style.display = visible ? '' : 'none';
 }
 
 // ---------- render ----------
 function render(){
-  const rows = filtered();
-  renderKpis(rows);
-  renderCharts(rows);
-  renderTables(rows);
+  const list = rows();
+  renderKpis(list);
+  renderCharts(list);
+  renderGroupTable(list);
+  renderDetail(list);
 }
 
-function renderKpis(rows){
-  const total = rows.length;
-  const totalDt = rows.reduce((s,r)=>s+r.downtime,0);
-  const machines = new Set(rows.map(r=>r.machine).filter(Boolean)).size;
-  const types = new Set(rows.map(r=>r.breakdownType).filter(Boolean)).size;
-  const avg = total ? totalDt/total : 0;
-  const topType = groupSum(rows, r=>r.breakdownType)[0];
-  const topMachine = groupSum(rows, r=>r.machine)[0];
+function renderKpis(list){
+  const total = list.length;
+  const totalDt = list.reduce((s, r) => s + r.downtime, 0);
+  const machines = new Set(list.map(r => r.machine).filter(Boolean)).size;
+  const sbus = new Set(list.map(r => r.sbu).filter(Boolean)).size;
+  const topM = groupSum(list, r => r.machine)[0];
+  const topS = groupSum(list, r => r.sbu)[0];
+  const avg = total ? totalDt / total : 0;
   document.getElementById('kpis').innerHTML = `
     <div class="kpi blue"><div class="num">${fmt(total)}</div><div class="lbl">Breakdown Events</div></div>
     <div class="kpi red"><div class="num">${fmt(totalDt)}</div><div class="lbl">Total Downtime (min)</div><div class="sub2">${hrsStr(totalDt)} hours</div></div>
     <div class="kpi amber"><div class="num">${avg.toFixed(1)}</div><div class="lbl">Avg min / event</div></div>
-    <div class="kpi violet"><div class="num">${machines}</div><div class="lbl">Machines / Mills</div></div>
-    <div class="kpi green"><div class="num">${types}</div><div class="lbl">Breakdown Types</div></div>
-    <div class="kpi cyan"><div class="num" style="font-size:16px">${esc(topType?topType.k:'-')}</div><div class="lbl">Top Type</div><div class="sub2">${topType?hrsStr(topType.v)+' h':'–'}</div></div>
-    <div class="kpi cyan"><div class="num" style="font-size:16px">${esc(topMachine?topMachine.k:'-')}</div><div class="lbl">Top Machine</div><div class="sub2">${topMachine?hrsStr(topMachine.v)+' h':'–'}</div></div>
+    <div class="kpi violet"><div class="num">${machines}</div><div class="lbl">Machines</div></div>
+    <div class="kpi green"><div class="num">${sbus}</div><div class="lbl">SBUs</div></div>
+    <div class="kpi cyan"><div class="num" style="font-size:16px">${esc(topM ? topM.k : '-')}</div><div class="lbl">Top Machine</div><div class="sub2">${topM ? hrsStr(topM.v) + ' h' : '–'}</div></div>
+    <div class="kpi cyan"><div class="num" style="font-size:16px">${esc(topS ? topS.k : '-')}</div><div class="lbl">Top SBU</div><div class="sub2">${topS ? hrsStr(topS.v) + ' h' : '–'}</div></div>
   `;
 }
 
-function renderCharts(rows){
-  // SBU chart is pointless when one SBU is selected; Type chart likewise for one type.
+function renderCharts(list){
+  const byMachine = groupSum(list, r => r.machine).slice(0, 20).reverse();
+  makeBar('chMachine', byMachine.map(x => x.k), byMachine.map(x => hrs(x.v)), '#2563eb', true);
+
   const showSbu = state.sbu === 'All';
-  const showType = state.type === 'All';
-  const showReasonTime = state.sbu !== 'All' && state.type !== 'All';
-  setCard('cardSbu', showSbu, !showType);
-  setCard('cardType', showType, !showSbu);
-  setCard('cardReasonTime', showReasonTime, true);
-
-  if (showType){
-    const byType = groupSum(rows, r=>r.breakdownType).slice(0,12);
-    makeBar('chType', byType.map(x=>x.k), byType.map(x=>hrs(x.v)), '#2563eb', false);
-  }
+  setCard('cardSbu', showSbu);
   if (showSbu){
-    const bySbu = groupSum(rows, r=>r.sbu).slice(0,12);
-    makeBar('chSbu', bySbu.map(x=>x.k), bySbu.map(x=>hrs(x.v)), '#16a34a', false);
+    const bySbu = groupSum(list, r => r.sbu);
+    makeBar('chSbu', bySbu.map(x => x.k), bySbu.map(x => hrs(x.v)), '#16a34a', false);
   }
-  if (showReasonTime){
-    const allReasons = groupSum(rows, r => r.reason || '(blank)');
-    const topN = 6;
-    const top = allReasons.slice(0, topN).map(x=>x.k);
-    const topSet = new Set(top);
-    const yms = [...new Set(rows.map(r=>r.ym).filter(Boolean))].sort();
-    const reasonOf = r => r.reason || '(blank)';
-    const series = top.map((reason,i) => ({
-      label: trimLabel(reason),
-      color: PALETTE[i % PALETTE.length],
-      data: yms.map(ym => hrs(rows.filter(r => r.ym===ym && reasonOf(r)===reason).reduce((s,r)=>s+r.downtime,0)))
-    }));
-    if (allReasons.length > topN){
-      series.push({ label:'Other', color:'#94a3b8',
-        data: yms.map(ym => hrs(rows.filter(r => r.ym===ym && !topSet.has(reasonOf(r))).reduce((s,r)=>s+r.downtime,0))) });
-    }
-    makeStackedBar('chReasonTime', yms.map(shortYm), series);
-  }
-
-  const byMachine = groupSum(rows, r=>r.machine).slice(0,15).reverse();
-  makeBar('chMachine', byMachine.map(x=>x.k), byMachine.map(x=>hrs(x.v)), '#d97706', true);
-
-  const byYm = groupSum(rows.filter(r=>r.ym), r=>r.ym).sort((a,b)=>a.k.localeCompare(b.k));
-  makeLine('chTrend', byYm.map(x=>shortYm(x.k)), byYm.map(x=>hrs(x.v)));
-
-  const share = groupCount(rows, r=>r.breakdownType).slice(0,8);
-  makeDoughnut('chShare', share.map(x=>x.k), share.map(x=>x.v));
-
-  const byShift = groupSum(rows, r=>r.shift||'(blank)').sort((a,b)=>String(a.k).localeCompare(String(b.k)));
-  makeBar('chShift', byShift.map(x=>''+x.k), byShift.map(x=>hrs(x.v)), '#7c3aed', false);
 }
 
-function topTable(elId, entries, headLabel, counterId){
-  let html = '<table><thead><tr><th>#</th><th>'+headLabel+'</th><th class="numcol">Downtime (h)</th><th class="numcol">Events</th></tr></thead><tbody>';
-  if (!entries.length) html += '<tr><td colspan="4" class="muted">No data for current filters.</td></tr>';
-  entries.forEach((e,i) => {
-    html += `<tr><td class="muted">${i+1}</td><td>${esc(e.k)}</td><td class="numcol">${hrsStr(e.v)}</td><td class="numcol">${e.c}</td></tr>`;
+function topReason(group){
+  const m = new Map();
+  group.forEach(r => { const k = r.reason || '(blank)'; m.set(k, (m.get(k) || 0) + r.downtime); });
+  let best = null;
+  m.forEach((v, k) => { if (!best || v > best.v) best = { k, v }; });
+  return best ? best.k : '';
+}
+
+function renderGroupTable(list){
+  const bySbu = new Map();
+  list.forEach(r => {
+    const s = r.sbu || '(blank)';
+    if (!bySbu.has(s)) bySbu.set(s, []);
+    bySbu.get(s).push(r);
   });
+
+  const sbus = [...bySbu.keys()].sort();
+  let totalGroups = 0;
+  let html = '<table><thead><tr><th>SBU / Machine</th><th class="numcol">Events</th><th class="numcol">Downtime (min)</th><th class="numcol">Downtime (h)</th><th>Top Reason</th><th style="width:120px">Share</th></tr></thead><tbody>';
+  if (!sbus.length) html += '<tr><td colspan="6" class="muted">No breakdowns recorded for the day.</td></tr>';
+
+  const grandDt = list.reduce((s, r) => s + r.downtime, 0) || 1;
+  for (const s of sbus){
+    const group = bySbu.get(s);
+    const sDt = group.reduce((a, r) => a + r.downtime, 0);
+    html += `<tr class="grp"><td>${esc(s)}</td><td class="numcol">${fmt(group.length)}</td><td class="numcol">${fmt(sDt)}</td><td class="numcol">${hrsStr(sDt)}</td><td></td><td></td></tr>`;
+    const byMachine = new Map();
+    group.forEach(r => {
+      const k = r.machine || '(blank)';
+      const o = byMachine.get(k) || { dt: 0, c: 0, rows: [] };
+      o.dt += r.downtime; o.c++; o.rows.push(r);
+      byMachine.set(k, o);
+    });
+    const machines = [...byMachine.entries()].sort((a, b) => b[1].dt - a[1].dt);
+    for (const [mach, o] of machines){
+      totalGroups++;
+      const pct = (100 * o.dt / grandDt).toFixed(1);
+      html += `<tr>
+        <td style="padding-left:26px">${esc(mach)}</td>
+        <td class="numcol">${o.c}</td>
+        <td class="numcol">${fmt(o.dt)}</td>
+        <td class="numcol">${hrsStr(o.dt)}</td>
+        <td title="${esc(topReason(o.rows))}">${esc(topReason(o.rows))}</td>
+        <td><div class="bar-wrap"><div class="bar" style="width:${pct}%"></div></div></td>
+      </tr>`;
+    }
+  }
   html += '</tbody></table>';
-  document.getElementById(elId).innerHTML = html;
-  if (counterId) document.getElementById(counterId).textContent = '(' + entries.length + ')';
+  document.getElementById('sbuMachineTable').innerHTML = html;
+  document.getElementById('groupCount').textContent = '(' + totalGroups + ' machines across ' + sbus.length + ' SBUs)';
 }
 
-function renderTables(rows){
-  // reasons
-  const rMap = new Map();
-  rows.forEach(r => { const k=r.reason||'(blank)'; const o=rMap.get(k)||{v:0,c:0}; o.v+=r.downtime; o.c++; rMap.set(k,o); });
-  const reasons = [...rMap.entries()].map(([k,o])=>({k,v:o.v,c:o.c})).sort((a,b)=>b.v-a.v).slice(0,50);
-  topTable('reasonTable', reasons, 'Reason', 'reasonCount');
-
-  // names
-  const nMap = new Map();
-  rows.forEach(r => { const k=r.breakdownName||'(blank)'; const o=nMap.get(k)||{v:0,c:0}; o.v+=r.downtime; o.c++; nMap.set(k,o); });
-  const names = [...nMap.entries()].map(([k,o])=>({k,v:o.v,c:o.c})).sort((a,b)=>b.v-a.v).slice(0,50);
-  topTable('nameTable', names, 'Breakdown Name / Equipment', 'nameCount');
-
-  // sheets
-  const sMap = new Map();
-  rows.forEach(r => { const k=r.sheet; const o=sMap.get(k)||{v:0,c:0}; o.v+=r.downtime; o.c++; sMap.set(k,o); });
-  const sheets = [...sMap.entries()].map(([k,o])=>({k,v:o.v,c:o.c})).sort((a,b)=>b.v-a.v);
-  topTable('sheetTable', sheets, 'Source Sheet', 'sheetCount');
-
-  // detail
-  document.getElementById('detailCount').textContent = '(' + fmt(rows.length) + ' records)';
-  const shown = rows.slice(0,500);
-  let html = '<table><thead><tr><th>Date</th><th>SBU</th><th>Machine</th><th>Shift</th><th>Type</th><th>Breakdown Name</th><th>Reason</th><th class="numcol">Min</th><th>Sheet</th></tr></thead><tbody>';
-  if (!shown.length) html += '<tr><td colspan="9" class="muted">No matching records.</td></tr>';
-  for (const r of shown){
+function renderDetail(list){
+  document.getElementById('detailCount').textContent = '(' + fmt(list.length) + ' records)';
+  let html = '<table><thead><tr><th>SBU</th><th>Machine</th><th>Shift</th><th>Type</th><th>Breakdown Name</th><th>Reason</th><th class="numcol">Min</th><th>Sheet</th></tr></thead><tbody>';
+  if (!list.length) html += '<tr><td colspan="8" class="muted">No records.</td></tr>';
+  const sorted = [...list].sort((a, b) => String(a.sbu).localeCompare(String(b.sbu)) || String(a.machine).localeCompare(String(b.machine)));
+  for (const r of sorted){
     html += `<tr>
-      <td class="mono">${esc(r.date)}</td>
       <td>${esc(r.sbu)}</td>
       <td>${esc(r.machine)}</td>
       <td>${esc(r.shift)}</td>
       <td><span class="tag">${esc(r.breakdownType)}</span></td>
       <td title="${esc(r.breakdownName)}">${esc(r.breakdownName)}</td>
       <td title="${esc(r.reason)}">${esc(r.reason)}</td>
-      <td class="numcol">${r.downtime?fmt(r.downtime):''}</td>
+      <td class="numcol">${r.downtime ? fmt(r.downtime) : ''}</td>
       <td class="muted small">${esc(r.sheet)}</td>
     </tr>`;
   }
@@ -456,51 +271,41 @@ function renderTables(rows){
 
 // ---------- export ----------
 function exportCSV(){
-  const rows = filtered();
+  const list = rows();
   const cols = ['date','sbu','machine','shift','shiftName','breakdownType','breakdownName','reason','downtime','operator','supervisor','product','remarks','sheet'];
   const head = ['Date','SBU','Machine','Shift','Shift Name','Breakdown Type','Breakdown Name','Reason','Downtime (min)','Operator','Supervisor','Product','Remarks','Sheet'];
   const lines = [head.join(',')];
-  for (const r of rows) lines.push(cols.map(c => '"'+String(r[c]??'').replace(/"/g,'""')+'"').join(','));
-  const blob = new Blob(["\ufeff"+lines.join('\r\n')], {type:'text/csv;charset=utf-8;'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download='breakdown_records.csv'; a.click();
+  for (const r of list) lines.push(cols.map(c => '"' + String(r[c] ?? '').replace(/"/g, '""') + '"').join(','));
+  const blob = new Blob(["\ufeff" + lines.join('\r\n')], { type:'text/csv;charset=utf-8;' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'breakdown_' + (REPORT.reportDate || 'day') + '.csv'; a.click();
 }
 
-// ---------- wire up ----------
-function setFrom(id, key, cast){
-  document.getElementById(id).addEventListener('change', e => {
-    state[key] = cast ? cast(e.target.value) : e.target.value;
-    if (key==='sbu') refreshMachineOptions();
-    render();
-  });
-}
-setFrom('fSbu','sbu'); setFrom('fType','type'); setFrom('fYear','year'); setFrom('fMonth','month');
-setFrom('fMachine','machine'); setFrom('fFrom','from'); setFrom('fTo','to');
-document.getElementById('fSearch').addEventListener('input', e => { state.search = e.target.value; render(); });
-document.getElementById('resetBtn').addEventListener('click', () => {
-  ['fSbu','fMachine','fType','fYear','fMonth','fFrom','fTo','fSearch'].forEach(id => document.getElementById(id).value = (id==='fSbu'||id==='fMachine'||id==='fType'||id==='fYear'||id==='fMonth')?'All':'');
-  state.sbu='All'; state.machine='All'; state.type='All'; state.year='All'; state.month='All'; state.from=''; state.to=''; state.search='';
-  refreshMachineOptions();
-  render();
-});
+// ---------- filters ----------
+document.getElementById('fSbu').addEventListener('change', e => { state.sbu = e.target.value; render(); });
+document.getElementById('resetBtn').addEventListener('click', () => { state.sbu = 'All'; document.getElementById('fSbu').value = 'All'; render(); });
 document.getElementById('exportBtn').addEventListener('click', exportCSV);
 
 function finish(){
+  const sel = document.getElementById('fSbu');
+  (META.sbus || [...new Set((REPORT.rows || []).map(r => r.sbu))].filter(Boolean).sort())
+    .forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+
+  document.getElementById('subtitle').textContent = 'Machine downtime breakdown for ' + (REPORT.reportLabel || REPORT.reportDate || 'the day') + '.';
   document.getElementById('generated').textContent = META.generated ? 'Updated ' + new Date(META.generated).toLocaleString() : '';
-  if (META.errors && META.errors.length){
-    document.getElementById('banner').innerHTML = '<div class="banner"><b>Note:</b> '+META.errors.length+' source sheet(s) could not be read (not shared publicly): '+META.errors.map(e=>esc(e.sheet)).join(', ')+'. All other sheets are included.</div>';
-  }
-  populateFilters();
+
+  const notes = [];
+  if (REPORT.fallback) notes.push('No data was found for yesterday — showing the most recent day with data (' + esc(REPORT.reportDate) + ').');
+  if (META.errors && META.errors.length) notes.push(META.errors.length + ' source sheet(s) could not be read (not shared publicly): ' + META.errors.map(e => esc(e.sheet)).join(', ') + '.');
+  if (notes.length) document.getElementById('banner').innerHTML = '<div class="banner">' + notes.join(' ') + '</div>';
+
   render();
 }
 
-if (DATA.length){ finish(); }
-else {
-  Promise.all([
-    fetch('./data/data.json').then(r=>{ if(!r.ok) throw new Error('data.json '+r.status); return r.json(); }),
-    fetch('./data/meta.json').then(r=>{ if(!r.ok) throw new Error('meta.json '+r.status); return r.json(); })
-  ]).then(([d,m]) => { DATA = d; META = m; finish(); })
-   .catch(e => { document.getElementById('banner').innerHTML = '<div class="banner"><b>Could not load data:</b> '+esc(e.message)+'. Run <code>node build.mjs</code> then reload.</div>'; });
-}
+Promise.all([
+  fetch('./data/report.json').then(r => { if (!r.ok) throw new Error('report.json ' + r.status); return r.json(); }),
+  fetch('./data/meta.json').then(r => r.ok ? r.json() : {}).catch(() => ({}))
+]).then(([rep, meta]) => { REPORT = rep; META = meta; finish(); })
+  .catch(e => { document.getElementById('banner').innerHTML = '<div class="banner"><b>Could not load data:</b> ' + esc(e.message) + '. Run <code>node build.mjs</code> then reload.</div>'; });
 </script>
 </body>
 </html>
