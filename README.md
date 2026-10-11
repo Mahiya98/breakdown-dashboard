@@ -1,5 +1,7 @@
 # Breakdown Analysis Dashboard
 
+**Live:** https://mahiya98.github.io/breakdown-dashboard/
+
 Interactive dashboard that pulls machine **breakdown / downtime** logs from Google Sheets,
 normalises them, and shows charts + KPIs with filters for **SBU, Mill/Machine, Breakdown Type,
 Year and Date range**.
