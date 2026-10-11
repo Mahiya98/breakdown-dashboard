@@ -14,8 +14,6 @@ const SHEETS = [
   { name: 'Breakdown K1',              id: '1KjDYnm1D0B8D91BhhmZ8Sm1XuRU2gT20mpdwbBdkkDs', gid: '482789258',   sbu: 'FAL' },
   { name: 'VRM Breakdown',             id: '1NzcGrUHk7N4FSVGpAp9ZQ_H7TbpmX92YTtaJSnMx8Hg', gid: '482789258',   sbu: 'ACCL' },
   { name: 'Packer Breakdown',          id: '1A-qefcx2jNDVB14DvuxmXFUl4bJJG8a9NEapCZYGxcA', gid: '482789258',   sbu: 'ACCL' },
-  { name: 'Loom U1 Breakdown',         id: '1Q8gbAgtvxw9BaumOzPCwHpbZuzsW0tdNA_LlCpgP1jM', gid: '1119362862',  sbu: 'APFIL Unit-1 Loom' },
-  { name: 'Loom U2 Breakdown',         id: '1H5YOsacylfSGxHFGA-D9JD7LCnWSUsx4NtU-fjccZ7w', gid: '482789258',   sbu: 'APFIL Unit-2 Loom' },
   { name: 'Tapeline Breakdown',        id: '1Noxy7HFM-N98NUTjmWji3s364myGGBfQiOWToAtuRns', gid: '482789258',   sbu: 'APFIL' },
   { name: 'Flour Breakdown',           id: '1EUn0YYjbM5CsJL5-O2tQRF5s2C_VcHvqEoo0B_B6hw0', gid: '482789258',   sbu: 'AEFML' },
   { name: 'Breakdown D1',              id: '1sRaACw7K7q4YN8KfkmdEMItgxNQpqzjmWje1TXrUBqg', gid: '482789258',   sbu: 'AEL' },
