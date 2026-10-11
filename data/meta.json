@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-11T10:34:31.723Z",
-  "totalRows": 59574,
-  "totalDowntime": 13512570.691000102,
+  "generated": "2026-10-11T10:39:18.569Z",
+  "totalRows": 60233,
+  "totalDowntime": 13560737.691000102,
   "sheets": [
     {
       "sheet": "Rolling Breakdown",
@@ -34,6 +34,11 @@
       "downtime": 304000
     },
     {
+      "sheet": "Tapeline Breakdown",
+      "rows": 659,
+      "downtime": 48167
+    },
+    {
       "sheet": "Flour Breakdown",
       "rows": 2888,
       "downtime": 316860.10900000005
@@ -53,10 +58,6 @@
     {
       "sheet": "Bending Breakdown",
       "error": "HTTP 401"
-    },
-    {
-      "sheet": "Tapeline Breakdown",
-      "error": "HTTP 401"
     }
   ],
   "sbus": [
@@ -64,6 +65,7 @@
     "AEFML",
     "AEL",
     "AIL",
+    "APFIL",
     "FAL",
     "MRML"
   ],
@@ -103,12 +105,15 @@
     "Rolling",
     "Sorting Side-1",
     "Sorting Side-2",
+    "Unit-1 Tapeline",
+    "Unit-2 Tapeline",
     "VRM-1",
     "VRM-2"
   ],
   "types": [
     "#N/A",
     "(blank)",
+    "Change Over Time",
     "Electrical Breakdown",
     "Electromechanical Breakdown",
     "In Process Setup/ Adjustment",
@@ -131,5 +136,5 @@
   "reportDate": "2026-10-10",
   "reportLabel": "Sat, 10 Oct 2026",
   "reportFallback": false,
-  "reportRows": 81
+  "reportRows": 85
 }
