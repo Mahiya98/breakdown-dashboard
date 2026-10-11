@@ -1,13 +1,8 @@
 {
-  "generated": "2026-10-11T10:49:51.065Z",
-  "totalRows": 54094,
-  "totalDowntime": 13249122.691000102,
+  "generated": "2026-10-11T10:51:50.329Z",
+  "totalRows": 46233,
+  "totalDowntime": 11914387.691000102,
   "sheets": [
-    {
-      "sheet": "SMS Breakdown",
-      "rows": 7861,
-      "downtime": 1334735
-    },
     {
       "sheet": "Breakdown E1",
       "rows": 19414,
@@ -59,13 +54,11 @@
     "ACCL",
     "AEFML",
     "AEL",
-    "AIL",
     "APFIL",
     "FAL",
     "MRML"
   ],
   "machines": [
-    "#REF!",
     "(blank)",
     "Aromatic Unit -1 Hulling",
     "Aromatic Unit -1 Sorting",
@@ -79,12 +72,7 @@
     "Boiled Unit -2 Hulling",
     "Boiled Unit -2 Sorting",
     "Bulk",
-    "CCM",
     "Cleaning",
-    "Furnace",
-    "Furnace 1",
-    "Furnace 2",
-    "Furnace 3",
     "Hulling Side Line-1",
     "Hulling Side Line-2",
     "Line -1 Bagging",
@@ -129,5 +117,5 @@
   "reportDate": "2026-10-10",
   "reportLabel": "Sat, 10 Oct 2026",
   "reportFallback": false,
-  "reportRows": 85
+  "reportRows": 73
 }
