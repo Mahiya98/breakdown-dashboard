@@ -335,9 +335,10 @@ function finish(){
   render();
 }
 
+const _bust = '?v=' + Date.now();
 Promise.all([
-  fetch('./data/report.json').then(r => { if (!r.ok) throw new Error('report.json ' + r.status); return r.json(); }),
-  fetch('./data/meta.json').then(r => r.ok ? r.json() : {}).catch(() => ({}))
+  fetch('./data/report.json' + _bust).then(r => { if (!r.ok) throw new Error('report.json ' + r.status); return r.json(); }),
+  fetch('./data/meta.json' + _bust).then(r => r.ok ? r.json() : {}).catch(() => ({}))
 ]).then(([rep, meta]) => { REPORT = rep; META = meta; finish(); })
   .catch(e => { document.getElementById('banner').innerHTML = '<div class="banner"><b>Could not load data:</b> ' + esc(e.message) + '. Run <code>node build.mjs</code> then reload.</div>'; });
 </script>
