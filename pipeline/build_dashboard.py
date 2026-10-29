@@ -10,6 +10,7 @@ import pandas as pd
 
 PRED_CSV = "dashboard_predictions.csv"
 METRICS_CSV = "dashboard_accuracy_metrics.csv"
+DATA_JSON = "dashboard_data.json"
 TEMPLATE = "dashboard.template.html"
 OUTPUT = "dashboard.html"
 
@@ -17,6 +18,15 @@ OUTPUT = "dashboard.html"
 def main():
     df = pd.read_csv(PRED_CSV)
     metrics = pd.read_csv(METRICS_CSV)
+
+    # actual_reasons has real structure (list of dicts) only in the JSON bundle --
+    # the CSV flattens it to a string. Pull it from JSON, aligned by row order
+    # (generate_dashboard_predictions.py writes both from the same pred_df, in the
+    # same order, so positional alignment is safe here).
+    with open(DATA_JSON) as f:
+        bundle_in = json.load(f)
+    reasons_by_row = [rec.get("actual_reasons", []) for rec in bundle_in["predictions"]]
+    assert len(reasons_by_row) == len(df), "dashboard_data.json row count must match dashboard_predictions.csv"
 
     machines = sorted(df["machine_id"].unique().tolist())
     dates = sorted(df["feature_date"].unique().tolist())
@@ -32,14 +42,42 @@ def main():
     h_idx = {v: i for i, v in enumerate(horizons)}
     s_idx = {v: i for i, v in enumerate(splits)}
 
+    # Reason groups/details referenced across all actual_reasons, as index tables
+    # so each row only stores small integers, not repeated strings.
+    reason_groups = []
+    rg_idx = {}
+    reason_details = []
+    rd_idx = {}
+
+    def _rg(name):
+        if name not in rg_idx:
+            rg_idx[name] = len(reason_groups)
+            reason_groups.append(name)
+        return rg_idx[name]
+
+    def _rd(name):
+        if name not in rd_idx:
+            rd_idx[name] = len(reason_details)
+            reason_details.append(name)
+        return rd_idx[name]
+
     rows = []
-    for r in df.itertuples(index=False):
+    for i, r in enumerate(df.itertuples(index=False)):
         actual = r.actual_label
         actual = None if pd.isna(actual) else int(actual)
+
+        reasons_enc = []
+        for reason in reasons_by_row[i]:
+            reasons_enc.append([
+                _rg(reason["reason_group"]),
+                _rd(reason["reason_detail"]),
+                reason["downtime_minutes"],
+            ])
+
         rows.append([
             m_idx[r.machine_id], d_idx[r.feature_date], h_idx[r.forecast_horizon],
             c_idx[r.category], mo_idx[r.model_used], round(float(r.predicted_score), 4),
-            actual, s_idx[r.split],
+            actual, s_idx[r.split], reasons_enc,
         ])
 
     metrics_rows = []
@@ -55,6 +93,7 @@ def main():
     bundle = {
         "machines": machines, "dates": dates, "cats": cats, "models": models,
         "horizons": horizons, "splits": splits,
+        "reason_groups": reason_groups, "reason_details": reason_details,
         "rows": rows,
         "metrics": metrics_rows,
         "generated_note": (
@@ -62,7 +101,10 @@ def main():
             "Model selection used VALIDATION roc_auc only (test set never used for selection). "
             "Baseline/dummy strategies were excluded from selection eligibility. actual is null "
             "where the future day label_confidence is unknown_no_production_record -- never "
-            "coerced to 0."
+            "coerced to 0. actual_reasons (per row, up to top 3 by downtime) are the real logged "
+            "breakdown reason/grouping for that forecast_target_date -- ground truth, not a "
+            "prediction; empty when no breakdown was logged that day, or none in this row's "
+            "category."
         ),
     }
     data_json = json.dumps(bundle, separators=(",", ":"))

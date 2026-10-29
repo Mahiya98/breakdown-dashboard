@@ -106,7 +106,7 @@
   <div class="panel">
     <h2>Per-horizon detail: predicted vs. actual</h2>
     <table>
-      <thead><tr><th>Horizon</th><th>Category</th><th>Target date</th><th>Predicted score</th><th>Predicted label</th><th>Actual</th><th>Match</th></tr></thead>
+      <thead><tr><th>Horizon</th><th>Category</th><th>Target date</th><th>Predicted score</th><th>Predicted label</th><th>Actual</th><th>Match</th><th>Actual breakdown reason (ground truth)</th></tr></thead>
       <tbody id="detailBody"></tbody>
     </table>
     <div class="legend">
@@ -114,6 +114,7 @@
       <span><span class="dot" style="background:var(--good)"></span>No breakdown predicted / occurred</span>
       <span><span class="dot" style="background:var(--unknown)"></span>Actual unknown (future date beyond test split, or label masked as unreliable)</span>
     </div>
+    <div class="note">The reason column is the real logged reason/grouping for that target date (e.g. "Bag House / Bag Filter / Dust Collection &mdash; LRS Problem"), shown whenever a breakdown actually occurred &mdash; it is ground truth, not a model prediction. It is blank when no breakdown was logged that day, or when known reasons that day don't belong to this row's category. Up to the top 3 reasons for that day are shown, ranked by logged downtime minutes. A dedicated model that predicts the likely reason in advance has not been built yet (see <code>step10_reason_modeling_plan.md</code>).</div>
   </div>
 
   <div class="panel">
@@ -140,7 +141,9 @@ window.addEventListener('error', function(e) { showError(e.message); });
 try {
   const bundle = JSON.parse(document.getElementById('dashboard-data').textContent);
   const MACH = bundle.machines, DATES = bundle.dates, CATS = bundle.cats, MODELS = bundle.models, HORIZONS = bundle.horizons, SPLITS = bundle.splits;
-  // row: [machine_i, date_i, horizon_i, cat_i, model_i, score, actual(0/1/null), split_i]
+  const REASON_GROUPS = bundle.reason_groups || [], REASON_DETAILS = bundle.reason_details || [];
+  // row: [machine_i, date_i, horizon_i, cat_i, model_i, score, actual(0/1/null), split_i, reasons]
+  // reasons: [[group_i, detail_i, downtime_minutes_or_null], ...] -- ground truth, up to top 3 by downtime
   const rows = bundle.rows;
   const metrics = bundle.metrics;
   document.getElementById('genNote').textContent = bundle.generated_note;
@@ -195,11 +198,21 @@ try {
     const sel = rows.filter(r => r[0] === mi && r[1] === di);
     document.getElementById('splitTag').textContent = 'split: ' + (sel[0] ? SPLITS[sel[0][7]] : '--');
 
+    function reasonsHtml(reasons) {
+      if (!reasons || reasons.length === 0) return '<span style="color:var(--muted)">&mdash;</span>';
+      return reasons.map(([gi, di, minutes]) => {
+        const group = REASON_GROUPS[gi], detail = REASON_DETAILS[di];
+        const mins = (minutes === null || minutes === undefined) ? '' : ` (${minutes}m)`;
+        return `<div style="margin-bottom:2px;"><strong>${group}</strong> &mdash; ${detail}${mins}</div>`;
+      }).join('');
+    }
+
     const expanded = sel.map(r => {
       const horizon = HORIZONS[r[2]], cat = CATS[r[3]], model = MODELS[r[4]], score = r[5], actual = r[6];
+      const reasons = r[8] || [];
       const predLabel = score >= 0.5 ? 1 : 0;
       const targetDate = addDays(DATES[di], horizonDays(horizon));
-      return { horizon, cat, model, score, actual, predLabel, targetDate };
+      return { horizon, cat, model, score, actual, predLabel, targetDate, reasons };
     });
 
     const ranked = [...expanded].sort((a, b) => b.score - a.score).slice(0, 3);
@@ -216,6 +229,7 @@ try {
           <div>
             <div class="top3-label">${r.cat.toUpperCase()} breakdown risk &mdash; ${horizonLabel(r.horizon)}</div>
             <div class="top3-sub">target date ${r.targetDate} &middot; model: ${r.model}</div>
+            ${r.reasons && r.reasons.length ? `<div class="top3-sub">actual reason: ${reasonsHtml(r.reasons)}</div>` : ''}
           </div>
           <div class="score-bar-wrap">
             <div class="score-bar-bg"><div class="score-bar-fill" style="width:${Math.round(r.score*100)}%;background:${scoreColor(r.score)}"></div></div>
@@ -247,6 +261,7 @@ try {
         <td>${r.predLabel === 1 ? '<span class="badge badge-pos">breakdown</span>' : '<span class="badge badge-neg">none</span>'}</td>
         <td>${actualBadge(r.actual)}</td>
         <td>${matchBadge(r.predLabel, r.actual)}</td>
+        <td style="font-size:12px;">${reasonsHtml(r.reasons)}</td>
       `;
       body.appendChild(tr);
     });

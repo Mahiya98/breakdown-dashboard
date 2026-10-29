@@ -84,10 +84,39 @@ def fit_and_score(df, feature_df, target_col, model_name, train_mask, val_mask, 
     return proba
 
 
+def load_actual_reasons():
+    """Actual historical breakdown reason per (machine, date), ground truth only.
+
+    Source: target_output/event_level_reason_table.csv, built from the audited
+    label taxonomy. Multiple shift-level breakdowns on the same machine/day are
+    collapsed into one row: all distinct reasons for that day are kept, each
+    with its own downtime-minutes weight, ranked by downtime so the dashboard
+    can show up to the top 3 contributing reasons for that actual day.
+    Days with no logged breakdown simply have no entry here (not a 'zero').
+    """
+    r = pd.read_csv("target_output/event_level_reason_table.csv")
+    r["date"] = pd.to_datetime(r["date"]).dt.strftime("%Y-%m-%d")
+    out = {}
+    for (machine, date), g in r.groupby(["machine", "date"]):
+        g = g.sort_values("Downtime", ascending=False)
+        reasons = [
+            {
+                "classification": row["electrical_mechanical_classification"],
+                "reason_group": row["failure_family_level2"],
+                "reason_detail": row["normalized_reason_level3"],
+                "downtime_minutes": None if pd.isna(row["Downtime"]) else float(row["Downtime"]),
+            }
+            for _, row in g.head(3).iterrows()
+        ]
+        out[(machine, date)] = reasons
+    return out
+
+
 def main():
     df = align_features_and_targets()
     feature_df, _ = build_feature_columns(df)
     train_mask, val_mask, test_mask, split_bounds = chronological_split(df)
+    actual_reasons = load_actual_reasons()
 
     split_label = pd.Series("train", index=df.index)
     split_label[val_mask] = "val"
@@ -113,21 +142,39 @@ def main():
                 actual_out = None
             else:
                 actual_out = int(actual_val)
+
+            machine_id = df["machine_id"].iloc[i]
+            target_date = (df["Date"].iloc[i] + pd.Timedelta(days=int(horizon.split("_")[-1]))).strftime("%Y-%m-%d")
+            reasons = actual_reasons.get((machine_id, target_date), [])
+            # Only surface reasons that match this category's classification
+            # (electrical model -> electrical reasons, mechanical -> mechanical,
+            # 'any' -> all actual reasons for that day).
+            if category == "electrical":
+                reasons = [r for r in reasons if r["classification"] == "Electrical"]
+            elif category == "mechanical":
+                reasons = [r for r in reasons if r["classification"] == "Mechanical"]
+
             records.append({
-                "machine_id": df["machine_id"].iloc[i],
+                "machine_id": machine_id,
                 "feature_date": df["Date"].iloc[i].strftime("%Y-%m-%d"),
                 "forecast_horizon": horizon,
-                "forecast_target_date": (df["Date"].iloc[i] + pd.Timedelta(days=int(horizon.split("_")[-1]))).strftime("%Y-%m-%d"),
+                "forecast_target_date": target_date,
                 "category": category,
                 "model_used": model_name,
                 "predicted_score": round(float(proba[i]), 4),
                 "predicted_label": int(proba[i] >= 0.5),
                 "actual_label": actual_out,
                 "split": split_label.iloc[i],
+                "actual_reasons": reasons,  # ground-truth only; [] if none logged for that day/category
             })
 
     pred_df = pd.DataFrame(records)
-    pred_df.to_csv("dashboard_predictions.csv", index=False)
+    # CSV export: flatten reasons to a readable string (JSON bundle below keeps full structure).
+    csv_df = pred_df.copy()
+    csv_df["actual_reasons"] = csv_df["actual_reasons"].apply(
+        lambda rs: "; ".join(f"{r['reason_group']} - {r['reason_detail']} ({r['downtime_minutes']}m)" for r in rs) if rs else ""
+    )
+    csv_df.to_csv("dashboard_predictions.csv", index=False)
     print(f"\nWrote dashboard_predictions.csv: {pred_df.shape}")
 
     # Attach accuracy metrics (already computed, validated) for the selected models only.
