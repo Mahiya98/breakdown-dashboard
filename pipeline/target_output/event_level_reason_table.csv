@@ -1,0 +1,440 @@
+machine,date,Shift,original_category,electrical_mechanical_classification,failure_family_level2,normalized_reason_level3,Downtime
+VRM-2,2025-07-11,A,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,LRS Problem,80.0
+VRM-2,2025-07-12,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Recirculation damper Fluctuation,50.0
+VRM-2,2025-07-14,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Bucket Damage,125.0
+VRM-2,2025-07-14,C,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Bucket Damage,120.0
+VRM-2,2025-07-15,D,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Bucket Damage,120.0
+VRM-1,2025-07-16,D,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,winding temp error,80.0
+VRM-1,2025-07-18,D,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint crack Then additive Hopper empty,80.0
+VRM-1,2025-07-18,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint problem,450.0
+VRM-1,2025-07-22,B,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,motor bearing change,95.0
+VRM-1,2025-07-23,B,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Gear box Problem,80.0
+VRM-1,2025-07-23,C,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Gearbox Problem,60.0
+VRM-1,2025-07-23,C,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",ZSS Alarm,60.0
+VRM-2,2025-07-29,D,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Classifier gear box oil seal change,360.0
+VRM-2,2025-07-30,A,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,Motion Detector Problem,85.0
+VRM-1,2025-07-30,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Stop without alarm,35.0
+VRM-1,2025-07-31,A,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Trip,60.0
+VRM-2,2025-08-01,D,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Not ready,40.0
+VRM-2,2025-08-01,A,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,LRS Problem,30.0
+VRM-2,2025-08-02,B,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Not ready,90.0
+VRM-1,2025-08-03,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint problem,180.0
+VRM-1,2025-08-03,C,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint crack Then additive Hopper empty,120.0
+VRM-1,2025-08-08,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Trip,75.0
+VRM-2,2025-08-08,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag Filter DP Maximum,80.0
+VRM-1,2025-08-08,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint crack Then additive Hopper empty,60.0
+VRM-2,2025-08-09,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag Filter DP Maximum,35.0
+VRM-1,2025-08-12,A,Electrical Breakdown,Electrical,Hydraulic & Pneumatic System Failures,Trip then cycle off & system stop,15.0
+VRM-1,2025-08-12,B,Electrical Breakdown,Electrical,Hydraulic & Pneumatic System Failures,Trip,35.0
+VRM-1,2025-08-13,B,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,Weigh Feeder PLC card problem,205.0
+VRM-1,2025-08-13,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,ID fan cooling fan Stop,70.0
+VRM-2,2025-08-19,D,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,cylinder seal change,360.0
+VRM-1,2025-08-19,A,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,2500KV Transformer trip,100.0
+VRM-2,2025-08-20,D,Electrical Breakdown,Electrical,"Bearing, Gearbox & Lubrication Failures",Maximum bearing temperature,80.0
+VRM-2,2025-08-20,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Mill Inlet Temperature RTD Problem,100.0
+VRM-1,2025-08-20,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,( ID fan) trip,165.0
+VRM-1,2025-08-20,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Stop without alarm,45.0
+VRM-1,2025-08-21,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Stop without alarm,75.0
+VRM-1,2025-08-21,A,Electrical Breakdown,Electrical,Other Confirmed Electrical Failures,Sullair compressure Perssure fall,90.0
+VRM-2,2025-08-21,B,Mechanical Breakdown,Mechanical,Other Confirmed Mechanical Failures,Safety gate connector problem,60.0
+VRM-1,2025-08-22,D,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Stop without alarm,50.0
+VRM-1,2025-08-22,A,Mechanical Breakdown,Mechanical,Other Confirmed Mechanical Failures,Rotary shaft Problem,120.0
+VRM-1,2025-08-27,D,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Motor change,360.0
+VRM-1,2025-08-27,A,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Motor change,480.0
+VRM-1,2025-08-27,B,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Motor Change & Fitting,180.0
+VRM-1,2025-08-27,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,ID fan cooling fan Stop,35.0
+VRM-2,2025-08-28,B,Electrical Breakdown,Electrical,Other Confirmed Electrical Failures,Sullair compressure Perssure fall,45.0
+VRM-1,2025-08-30,D,Electrical Breakdown,Electrical,Mill / Roller / Structural Mechanical Failures,Excess Mill Vibration,20.0
+VRM-1,2025-09-04,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,ID fan cooling fan Stop,100.0
+VRM-1,2025-09-04,C,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Stop without alarm,75.0
+VRM-1,2025-09-05,D,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Stop without alarm,300.0
+VRM-2,2025-09-05,A,Electrical Breakdown,Electrical,"Bearing, Gearbox & Lubrication Failures",Gear oil inlet temperature maximum,90.0
+VRM-2,2025-09-05,A,Electrical Breakdown,Electrical,Other Confirmed Electrical Failures,remote operation not ok,40.0
+VRM-1,2025-09-05,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,ID fan cooling fan Stop,390.0
+VRM-1,2025-09-07,B,Electrical Breakdown,Electrical,Hydraulic & Pneumatic System Failures,Trip,35.0
+VRM-2,2025-09-10,B,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Alignment,35.0
+VRM-1,2025-09-10,C,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,ID fan cooling fan Stop,30.0
+VRM-1,2025-09-11,D,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,ID fan cooling fan Stop,300.0
+VRM-1,2025-09-11,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Stop without alarm,120.0
+VRM-1,2025-09-11,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",trip,340.0
+VRM-1,2025-09-12,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Stop without alarm,90.0
+VRM-1,2025-09-14,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,ID fan cooling fan Stop,45.0
+VRM-1,2025-09-23,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,ID fan cooling fan Stop,40.0
+VRM-1,2025-09-24,B,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,motor bearing change,210.0
+VRM-2,2025-09-26,D,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Not ready,30.0
+VRM-1,2025-09-26,C,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,ID fan cooling fan Stop,80.0
+VRM-2,2025-09-27,D,Electrical Breakdown,Electrical,Other Confirmed Electrical Failures,HAG Flame out Fault,35.0
+VRM-1,2025-09-27,D,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,ID fan cooling fan Stop,120.0
+VRM-1,2025-09-27,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,FN -1 Trip,90.0
+VRM-1,2025-09-29,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,ID fan cooling fan Stop,50.0
+VRM-2,2025-09-30,D,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Trip,60.0
+VRM-1,2025-10-02,D,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Trip,15.0
+VRM-1,2025-10-02,A,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Trip,100.0
+VRM-1,2025-10-02,A,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Trip,45.0
+VRM-1,2025-10-02,B,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Not run,200.0
+VRM-1,2025-10-05,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Trip,80.0
+VRM-1,2025-10-09,B,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Bearing change,30.0
+VRM-2,2025-10-15,B,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Bearing change,120.0
+VRM-1,2025-10-18,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Trip,105.0
+VRM-1,2025-10-19,D,Electrical Breakdown,Electrical,Hydraulic & Pneumatic System Failures,Trip,30.0
+VRM-2,2025-10-20,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Compressor trip then Main Bag house DP Maximam,30.0
+VRM-1,2025-10-22,D,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Not run,70.0
+VRM-2,2025-10-23,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Gear oil outlet temperature high,40.0
+VRM-2,2025-10-25,B,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Trip,210.0
+VRM-1,2025-10-27,B,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Trip then cycle off & system stop,150.0
+VRM-1,2025-10-27,C,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Trip then cycle off & system stop,60.0
+VRM-2,2025-10-28,B,Mechanical Breakdown,Mechanical,Mill / Roller / Structural Mechanical Failures,roller silicon tube damage,185.0
+VRM-2,2025-11-01,D,Mechanical Breakdown,Mechanical,Mill / Roller / Structural Mechanical Failures,Roller no 1 displaced from collar,20.0
+VRM-2,2025-11-01,D,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag Filter DP Maximum,30.0
+VRM-2,2025-11-01,A,Electrical Breakdown,Electrical,"Bearing, Gearbox & Lubrication Failures",GB Lubrication trip,90.0
+VRM-2,2025-11-01,A,Mechanical Breakdown,Mechanical,Motor & Electrical Drive Failures,Hydraulic Tension pressure down (170 Bar),30.0
+VRM-2,2025-11-01,C,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Rotary Jam,30.0
+VRM-2,2025-11-02,D,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Rotary Jam,170.0
+VRM-2,2025-11-04,A,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,Hydraulic Tension pressure down (170 Bar),100.0
+VRM-2,2025-11-04,A,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Automation work,80.0
+VRM-2,2025-11-05,B,Electrical Breakdown,Electrical,Hydraulic & Pneumatic System Failures,Compressure pressure low,25.0
+VRM-1,2025-11-06,D,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,FN -1 Trip,105.0
+VRM-1,2025-11-06,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Overload alarm,115.0
+VRM-2,2025-11-09,A,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Compressor trip then Main Bag house DP Maximam,30.0
+VRM-1,2025-11-09,B,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,Weigh Feeder Weigh feeder calibration,105.0
+VRM-2,2025-11-10,A,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Trip,50.0
+VRM-1,2025-11-11,A,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Stop without alarm,20.0
+VRM-2,2025-11-13,C,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Bearing change,35.0
+VRM-1,2025-11-15,B,Electrical Breakdown,Electrical,Hydraulic & Pneumatic System Failures,Trip,30.0
+VRM-1,2025-11-15,C,Electrical Breakdown,Electrical,Hydraulic & Pneumatic System Failures,Trip,40.0
+VRM-1,2025-11-20,A,Mechanical Breakdown,Mechanical,"Electrical Protection, Instrumentation & Control Faults",HSSW remote operation not ready,65.0
+VRM-2,2025-11-21,B,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",oil tank level low,150.0
+VRM-1,2025-11-23,A,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Trip,60.0
+VRM-1,2025-11-24,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,"ZSS Alarm , BSS Alarm and Belt side",65.0
+VRM-2,2025-11-30,A,Electrical Breakdown,Electrical,Other Confirmed Electrical Failures,Not Healthy,80.0
+VRM-1,2025-12-01,D,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main bagfilter cylinder hose pipe leakage then Main bagfilter cycle off,50.0
+VRM-1,2025-12-03,B,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",PLC program problem,480.0
+VRM-1,2025-12-03,C,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",PLC program problem,120.0
+VRM-1,2025-12-04,D,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",PLC program problem,360.0
+VRM-1,2025-12-04,A,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",PLC program problem,480.0
+VRM-2,2025-12-04,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Rocker Arm PIN Housing Maintenance,480.0
+VRM-1,2025-12-04,B,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",PLC program problem,480.0
+VRM-2,2025-12-04,B,Electrical Breakdown,Electrical,Other Confirmed Electrical Failures,481BE-200 Return Fault,370.0
+VRM-1,2025-12-04,C,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",PLC program problem,120.0
+VRM-2,2025-12-04,B,Mechanical Breakdown,Mechanical,Other Confirmed Mechanical Failures,Water Sprinkler nozzal damage & maintenance,90.0
+VRM-1,2025-12-05,D,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",PLC program problem,125.0
+VRM-1,2025-12-06,A,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Trip,25.0
+VRM-1,2025-12-07,B,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Stop without alarm,210.0
+VRM-2,2025-12-09,A,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,Motion Detector Problem,90.0
+VRM-2,2025-12-12,B,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Limit fault,195.0
+VRM-2,2025-12-14,B,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Trip,50.0
+VRM-1,2025-12-15,A,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,512 WF-04 Not Running,325.0
+VRM-1,2025-12-15,B,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Main Baghouse Cycle off then ID fan trip three times,40.0
+VRM-1,2025-12-15,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,FN -1 Trip,145.0
+VRM-1,2025-12-15,C,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,FN -1 Trip,120.0
+VRM-2,2025-12-17,A,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,LRS fualt,90.0
+VRM-1,2025-12-20,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,FN -1 Trip,240.0
+VRM-1,2025-12-21,D,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,BSS Alarm,80.0
+VRM-1,2025-12-22,A,Electrical Breakdown,Electrical,Other Confirmed Electrical Failures,Not Healthy,30.0
+VRM-2,2025-12-22,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Limit fault,210.0
+VRM-2,2025-12-22,C,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Limit fault,120.0
+VRM-2,2025-12-23,D,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Limit fault,60.0
+VRM-2,2025-12-23,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,(Reject Bucket) bottom chute jam,60.0
+VRM-2,2025-12-23,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Limit fault,120.0
+VRM-1,2025-12-24,A,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Pulsing Problem,25.0
+VRM-1,2025-12-26,D,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Bucket Damage,70.0
+VRM-1,2025-12-26,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Bucket Damage,60.0
+VRM-1,2025-12-26,A,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Main bagfilter cycle off without alarm,120.0
+VRM-1,2025-12-27,D,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,Not ready,20.0
+VRM-2,2025-12-31,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Bucket Damage,95.0
+VRM-1,2026-01-02,D,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Main bagfilter cycle off without alarm,30.0
+VRM-1,2026-01-02,A,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Main bagfilter cycle off without alarm,15.0
+VRM-2,2026-01-02,A,Mechanical Breakdown,Mechanical,Motor & Electrical Drive Failures,Gearbox stuck,85.0
+VRM-1,2026-01-04,D,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Not run,60.0
+VRM-1,2026-01-05,B,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,BSS Alarm,50.0
+VRM-1,2026-01-05,C,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt side,30.0
+VRM-2,2026-01-06,C,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,Motion Detector Problem,75.0
+VRM-2,2026-01-07,D,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,Motion Detector Problem,45.0
+VRM-2,2026-01-08,B,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,trip,60.0
+VRM-2,2026-01-10,A,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,trip,95.0
+VRM-1,2026-01-10,A,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Not run,25.0
+VRM-2,2026-01-14,C,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Main motor Emergency feeder open,35.0
+VRM-2,2026-01-15,D,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,Hydralic oil low,70.0
+VRM-2,2026-01-15,A,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,Hydralic oil low,180.0
+VRM-2,2026-01-16,A,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,M01 Conditioning Pump trip,270.0
+VRM-2,2026-01-16,B,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,M01 Conditioning Pump trip,150.0
+VRM-2,2026-01-16,C,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,M01 Conditioning Pump trip,120.0
+VRM-2,2026-01-17,D,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,M01 Conditioning Pump trip,360.0
+VRM-2,2026-01-17,A,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,M01 Conditioning Pump trip,480.0
+VRM-2,2026-01-17,B,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,M01 Conditioning Pump trip,55.0
+VRM-1,2026-01-18,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,M01-Diaphramgh Lick,35.0
+VRM-1,2026-01-19,B,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Main bagfilter cycle off without alarm,20.0
+VRM-2,2026-01-20,B,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,Temperature high,200.0
+VRM-2,2026-01-21,D,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,Hydralic oil low,20.0
+VRM-1,2026-01-24,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,guide rollar problem,60.0
+VRM-1,2026-01-24,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint problem,100.0
+VRM-2,2026-01-24,B,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,Hydralic oil low,100.0
+VRM-1,2026-01-28,A,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Trip then cycle off & system stop,50.0
+VRM-1,2026-01-31,D,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Compressor Trip then main Bag house cycle off,30.0
+VRM-2,2026-02-01,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint crack Then additive Hopper empty,150.0
+VRM-2,2026-02-01,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint crack Then additive Hopper empty,50.0
+VRM-1,2026-02-03,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,( ID fan) trip,40.0
+VRM-2,2026-02-05,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,( ID fan) trip,65.0
+VRM-2,2026-02-06,D,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,Hydraulic Tension pressure down (170 Bar),150.0
+VRM-2,2026-02-06,A,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,Hydraulic Tension pressure down (170 Bar),250.0
+VRM-1,2026-02-14,B,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Not ready,30.0
+VRM-2,2026-02-14,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Bucket Damage,275.0
+VRM-2,2026-02-16,D,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Trip then cycle off & system stop,15.0
+VRM-2,2026-02-16,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Trip then cycle off & system stop,150.0
+VRM-1,2026-02-20,D,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main bagfilter cylinder hose pipe leakage then Main bagfilter cycle off,30.0
+VRM-1,2026-02-23,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Cylinder Problem,65.0
+VRM-1,2026-03-03,B,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Trip then cycle off & system stop,25.0
+VRM-1,2026-03-03,C,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",PLC program problem,70.0
+VRM-1,2026-03-04,D,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,( ID fan) trip,30.0
+VRM-1,2026-03-04,A,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Server Problem,20.0
+VRM-2,2026-03-04,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt side,60.0
+VRM-2,2026-03-04,C,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt side,120.0
+VRM-2,2026-03-05,D,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",PLC Panel Problem,50.0
+VRM-1,2026-03-05,D,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Pulsing Problem,180.0
+VRM-1,2026-03-06,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,( ID fan) trip,90.0
+VRM-2,2026-03-06,B,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,overload Alarm,50.0
+VRM-1,2026-03-07,D,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Cylinder Problem,55.0
+VRM-1,2026-03-07,D,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Limit fault,60.0
+VRM-1,2026-03-07,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Cylinder Problem,270.0
+VRM-1,2026-03-07,B,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Cylinder Problem,235.0
+VRM-2,2026-03-07,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,guide Belt problem,290.0
+VRM-1,2026-03-07,C,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Cylinder Problem,35.0
+VRM-1,2026-03-08,D,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Cylinder Problem,35.0
+VRM-1,2026-03-08,D,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Limit fault,60.0
+VRM-1,2026-03-08,A,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Limit fault,100.0
+VRM-1,2026-03-08,B,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,cylinder Solenoid Valve Changed,155.0
+VRM-1,2026-03-11,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Cylinder Problem,70.0
+VRM-2,2026-03-12,D,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",PLC program problem,160.0
+VRM-1,2026-03-12,B,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Compressor Trip then main Bag house cycle off,40.0
+VRM-1,2026-03-15,D,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",PLC program problem,300.0
+VRM-1,2026-03-19,D,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,( ID fan) trip,55.0
+VRM-1,2026-03-19,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,( ID fan) trip,25.0
+VRM-2,2026-03-20,D,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint problem,205.0
+VRM-2,2026-03-20,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint problem,310.0
+VRM-2,2026-03-21,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,trip then belt side problem,55.0
+VRM-2,2026-03-21,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,trip then belt side problem,180.0
+VRM-2,2026-03-22,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint problem,325.0
+VRM-1,2026-03-23,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt side,25.0
+VRM-1,2026-03-23,A,Mechanical Breakdown,Mechanical,Mill / Roller / Structural Mechanical Failures,guide rollar problem,35.0
+VRM-2,2026-03-23,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint problem,30.0
+VRM-2,2026-03-23,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint problem,30.0
+VRM-2,2026-03-25,D,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint problem,175.0
+VRM-2,2026-03-25,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint problem,240.0
+VRM-2,2026-03-26,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag Filter DP Maximum,140.0
+VRM-1,2026-03-27,A,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Main Baghouse Cycle off then ID fan trip three times,20.0
+VRM-1,2026-03-27,B,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Main Baghouse Cycle off then ID fan trip three times,25.0
+VRM-1,2026-03-28,D,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad- Oil Pressure low,25.0
+VRM-1,2026-03-28,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad- Oil Pressure low,20.0
+VRM-1,2026-03-28,B,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad pair low pressure alarm.(Mechanical Breakdown),10.0
+VRM-1,2026-03-29,C,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,ZSS Problem,20.0
+VRM-2,2026-03-30,D,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,Trip,50.0
+VRM-1,2026-03-30,D,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,ZSS Problem,115.0
+VRM-1,2026-03-30,A,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Compressure pressure low,20.0
+VRM-2,2026-03-30,B,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,Not ready,105.0
+VRM-1,2026-03-31,D,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,"ZSS Alarm , BSS Alarm and Belt side",45.0
+VRM-1,2026-04-01,A,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",PLC Panel Problem,180.0
+VRM-2,2026-04-01,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag Filter DP Maximum,30.0
+VRM-2,2026-04-02,D,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,trip,240.0
+VRM-2,2026-04-02,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Bucket Damage,90.0
+VRM-1,2026-04-02,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",HSMS Oil Temp High,280.0
+VRM-1,2026-04-02,B,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",HSMS Oil Temp High,180.0
+VRM-2,2026-04-05,D,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Limit fault,40.0
+VRM-1,2026-04-06,A,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,ZSS Alarm,120.0
+VRM-2,2026-04-06,B,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Trip,30.0
+VRM-1,2026-04-07,A,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Limit fault,40.0
+VRM-2,2026-04-07,C,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,(clinker hopper feeding belt) Motor problem,75.0
+VRM-2,2026-04-08,D,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,(clinker hopper feeding belt) Motor problem,80.0
+VRM-2,2026-04-09,D,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Recirculation damper Fluctuation,90.0
+VRM-1,2026-04-09,A,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",PLC program problem,175.0
+VRM-1,2026-04-09,B,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",PLC program problem,445.0
+VRM-1,2026-04-10,D,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Not ready,60.0
+VRM-1,2026-04-10,D,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",514DG1 Gate tripped,45.0
+VRM-2,2026-04-11,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Rotary Jam,250.0
+VRM-2,2026-04-11,B,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Rotary Jam,90.0
+VRM-1,2026-04-13,C,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad pair low pressure alarm.(Mechanical Breakdown),60.0
+VRM-1,2026-04-14,D,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad pair low pressure alarm.(Mechanical Breakdown),255.0
+VRM-2,2026-04-15,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Bucket Damage,120.0
+VRM-2,2026-04-16,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,M01-Diaphramgh Lick,20.0
+VRM-1,2026-04-16,B,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Mill Main Motor not start,435.0
+VRM-2,2026-04-16,B,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",PLC Panel Problem,170.0
+VRM-1,2026-04-16,C,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Mill Main Motor not start,120.0
+VRM-2,2026-04-16,C,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Server Problem,45.0
+VRM-1,2026-04-17,D,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Mill Main Motor not start,360.0
+VRM-1,2026-04-17,A,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Motor Change,480.0
+VRM-1,2026-04-17,B,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Motor Change,170.0
+VRM-1,2026-04-19,C,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,Trip then cycle off & system stop,60.0
+VRM-2,2026-04-20,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint problem,170.0
+VRM-2,2026-04-20,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag Filter DP Maximum,110.0
+VRM-1,2026-04-20,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint problem,130.0
+VRM-2,2026-04-20,B,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag Filter DP Maximum,120.0
+VRM-2,2026-04-21,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag Filter DP Maximum,40.0
+VRM-1,2026-04-22,B,Mechanical Breakdown,Mechanical,Other Confirmed Mechanical Failures,Temperature high,240.0
+VRM-2,2026-04-24,D,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag Filter DP Maximum,30.0
+VRM-1,2026-04-26,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,coupling free,145.0
+VRM-2,2026-04-26,A,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Trip,30.0
+VRM-2,2026-04-26,B,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Trip,55.0
+VRM-2,2026-04-27,B,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Gearbox Problem,95.0
+VRM-2,2026-04-27,B,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,Compressore pressure low and compressore maintenance,30.0
+VRM-2,2026-04-28,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,M01-Diaphramgh Lick,45.0
+VRM-1,2026-04-28,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Trip,40.0
+VRM-2,2026-04-28,B,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",PLC program problem,55.0
+VRM-2,2026-04-28,C,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",PLC program problem,60.0
+VRM-1,2026-04-29,A,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,Overload alarm(Motor Earth Fault),290.0
+VRM-2,2026-05-02,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,DP Maximum,30.0
+VRM-2,2026-05-03,B,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag Filter DP Maximum,60.0
+VRM-2,2026-05-03,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,trip,60.0
+VRM-2,2026-05-04,C,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Rocker Arm PIN Housing Maintenance,120.0
+VRM-2,2026-05-05,D,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Rocker Arm PIN Housing Maintenance,360.0
+VRM-2,2026-05-05,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Rocker Arm PIN Housing Maintenance,480.0
+VRM-2,2026-05-05,B,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Rocker Arm PIN Housing Maintenance,480.0
+VRM-2,2026-05-05,C,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Rocker Arm PIN Housing Maintenance,120.0
+VRM-2,2026-05-08,D,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Rocker Arm PIN Housing Maintenance,360.0
+VRM-2,2026-05-08,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Rocker Arm PIN Housing Maintenance,480.0
+VRM-2,2026-05-08,B,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Rocker Arm PIN Housing Maintenance,190.0
+VRM-1,2026-05-09,D,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad- Oil Pressure low,10.0
+VRM-1,2026-05-09,A,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Stop without alarm,20.0
+VRM-1,2026-05-10,B,Mechanical Breakdown,Mechanical,Other Confirmed Mechanical Failures,Temperature high,25.0
+VRM-2,2026-05-13,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag Filter DP Maximum,5.0
+VRM-2,2026-05-15,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Rocker Arm PIN Housing Maintenance,200.0
+VRM-2,2026-05-15,B,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Rocker Arm PIN Housing Maintenance,480.0
+VRM-2,2026-05-15,C,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Rocker Arm PIN Housing Maintenance,120.0
+VRM-2,2026-05-16,D,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Rocker Arm PIN Housing Maintenance,360.0
+VRM-2,2026-05-16,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Rocker Arm PIN Housing Maintenance,480.0
+VRM-2,2026-05-16,B,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Rocker Arm PIN Housing Maintenance,480.0
+VRM-2,2026-05-16,C,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Rocker Arm PIN Housing Maintenance,120.0
+VRM-1,2026-05-17,D,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Compressor pressure low and cylinder up problem,50.0
+VRM-2,2026-05-17,D,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Rocker Arm PIN Housing Maintenance,360.0
+VRM-2,2026-05-17,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",oil tank level low,100.0
+VRM-1,2026-05-18,D,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Compressor pressure low and cylinder up problem,40.0
+VRM-1,2026-05-18,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Trip,45.0
+VRM-1,2026-05-19,A,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Stop without alarm,45.0
+VRM-1,2026-05-23,B,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,winding temp error,30.0
+VRM-1,2026-05-26,D,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Trip,45.0
+VRM-1,2026-06-07,D,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad pair low pressure alarm.(Mechanical Breakdown),30.0
+VRM-1,2026-06-07,A,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Compressure pressure low,45.0
+VRM-1,2026-06-07,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad pair low pressure alarm.(Mechanical Breakdown),50.0
+VRM-2,2026-06-08,D,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Not run,240.0
+VRM-2,2026-06-08,A,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Not run,255.0
+VRM-1,2026-06-08,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,M01-Diaphramgh Lick,35.0
+VRM-1,2026-06-12,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Stop without alarm,60.0
+VRM-1,2026-06-13,B,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,M01-Diaphramgh Lick,30.0
+VRM-1,2026-06-13,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,( ID fan) trip,50.0
+VRM-1,2026-06-14,B,Electrical Breakdown,Electrical,Hydraulic & Pneumatic System Failures,Compressure pressure low,25.0
+VRM-1,2026-06-16,B,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,ZSS alarm,150.0
+VRM-1,2026-06-17,C,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main bagfilter cylinder hose pipe leakage then Main bagfilter cycle off,40.0
+VRM-1,2026-06-17,C,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,guide rollar problem,45.0
+VRM-1,2026-06-18,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Trip,40.0
+VRM-1,2026-07-01,D,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,( ID fan) trip,70.0
+VRM-1,2026-07-02,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Cylinder Problem,135.0
+VRM-1,2026-07-02,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad- Oil Pressure low,5.0
+VRM-1,2026-07-02,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,trip,30.0
+VRM-1,2026-07-03,A,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,winding temp error,30.0
+VRM-1,2026-07-08,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,FN -1 Trip,15.0
+VRM-1,2026-07-08,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,FN -1 Trip,180.0
+VRM-1,2026-07-12,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Compressor pressure low and cylinder up problem,30.0
+VRM-1,2026-07-12,B,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Trip,45.0
+VRM-1,2026-07-13,D,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Trip,40.0
+VRM-2,2026-07-13,D,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Trip,70.0
+VRM-2,2026-07-13,A,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Trip,90.0
+VRM-1,2026-07-14,B,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Compressor pressure low and cylinder up problem,45.0
+VRM-2,2026-07-14,C,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad- Oil Pressure low,35.0
+VRM-2,2026-07-15,D,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad- Oil Pressure low,85.0
+VRM-1,2026-07-15,D,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Cylinder Problem,20.0
+VRM-2,2026-07-16,D,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad- Oil Pressure low,35.0
+VRM-2,2026-07-18,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad- Oil Pressure low,35.0
+VRM-2,2026-07-18,B,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad- Oil Pressure low,30.0
+VRM-2,2026-07-18,C,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad- Oil Pressure low,35.0
+VRM-2,2026-07-19,C,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad- Oil Pressure low,35.0
+VRM-2,2026-07-20,D,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad- Oil Pressure low,35.0
+VRM-1,2026-07-20,D,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Trip then cycle off & system stop,80.0
+VRM-1,2026-07-20,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",HSMS Oil Temp High,60.0
+VRM-2,2026-07-20,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Gearbox Problem,60.0
+VRM-2,2026-07-22,A,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,ZSS Problem,145.0
+VRM-2,2026-07-22,C,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt torn,25.0
+VRM-2,2026-07-23,D,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt torn,65.0
+VRM-2,2026-07-23,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Damper Not Open then HAG is Not Runing,120.0
+VRM-2,2026-07-24,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Mill skip chamber Discharge chut jam,135.0
+VRM-2,2026-07-25,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,trip then belt side problem,155.0
+VRM-2,2026-07-25,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Discharge Chute jam,60.0
+VRM-2,2026-07-26,D,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad- Oil Pressure low,35.0
+VRM-2,2026-07-26,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad pair low pressure alarm.(Mechanical Breakdown),30.0
+VRM-2,2026-07-26,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad pair low pressure alarm.(Mechanical Breakdown),30.0
+VRM-2,2026-07-26,B,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Thrustpad- Oil Pressure low,80.0
+VRM-1,2026-07-30,D,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,trip,80.0
+VRM-1,2026-07-30,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,( ID fan) trip,65.0
+VRM-2,2026-07-30,B,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,Hydraulic Tension pressure down (170 Bar),40.0
+VRM-1,2026-08-01,D,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Mill Main Motor not start,360.0
+VRM-2,2026-08-01,D,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Gear box oil filter block,85.0
+VRM-1,2026-08-01,A,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Mill Main Motor not start,40.0
+VRM-1,2026-08-01,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Sullair compressure Perssure fall,80.0
+VRM-2,2026-08-01,B,Mechanical Breakdown,Mechanical,Mill / Roller / Structural Mechanical Failures,roller silicon tube damage,180.0
+VRM-2,2026-08-01,C,Mechanical Breakdown,Mechanical,Mill / Roller / Structural Mechanical Failures,roller silicon tube damage,120.0
+VRM-1,2026-08-02,D,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,( ID fan) trip,40.0
+VRM-1,2026-08-02,A,Electrical Breakdown,Electrical,Hydraulic & Pneumatic System Failures,HY-110 Emergency Alarm,100.0
+VRM-1,2026-08-04,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,( ID fan) trip,180.0
+VRM-2,2026-08-05,A,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Trip,35.0
+VRM-1,2026-08-05,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Trip,60.0
+VRM-1,2026-08-06,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,( ID fan) trip,90.0
+VRM-1,2026-08-07,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint problem,260.0
+VRM-1,2026-08-07,C,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint problem,120.0
+VRM-1,2026-08-08,D,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint problem,155.0
+VRM-1,2026-08-08,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint crack Then additive Hopper empty,420.0
+VRM-1,2026-08-08,B,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt joint problem,80.0
+VRM-1,2026-08-08,B,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Main bagfilter cycle off without alarm,60.0
+VRM-1,2026-08-08,B,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Cylinder Problem,20.0
+VRM-2,2026-08-11,D,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,Hydraulic Tension pressure down (170 Bar),360.0
+VRM-2,2026-08-11,A,Mechanical Breakdown,Mechanical,"Electrical Protection, Instrumentation & Control Faults","Mill gear lube, in operation not ready",480.0
+VRM-1,2026-08-11,A,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,Not healthy,20.0
+VRM-2,2026-08-11,B,Electrical Breakdown,Electrical,"Bearing, Gearbox & Lubrication Failures",Lubrication Unit Not Ready,130.0
+VRM-2,2026-08-11,C,Electrical Breakdown,Electrical,"Bearing, Gearbox & Lubrication Failures",Lubrication Unit Not Ready,45.0
+VRM-2,2026-08-12,D,Electrical Breakdown,Electrical,"Bearing, Gearbox & Lubrication Failures",Lubrication Unit Not Ready,50.0
+VRM-2,2026-08-12,C,Mechanical Breakdown,Mechanical,Other Confirmed Mechanical Failures,HAG Pressure Tube Problem,80.0
+VRM-2,2026-08-13,B,Mechanical Breakdown,Mechanical,Other Confirmed Mechanical Failures,silo air slide canvas cloth change,70.0
+VRM-1,2026-08-18,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,( ID fan) trip,45.0
+VRM-1,2026-08-22,B,Mechanical Breakdown,Mechanical,"Electrical Protection, Instrumentation & Control Faults",HSSW remote operation not ready,55.0
+VRM-1,2026-08-27,A,Electrical Breakdown,Electrical,"Bearing, Gearbox & Lubrication Failures",NDE bearing temperature error,80.0
+VRM-1,2026-09-03,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,( ID fan) trip,100.0
+VRM-1,2026-09-06,B,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag Filter DP Maximum,60.0
+VRM-1,2026-09-06,C,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag Filter DP Maximum,85.0
+VRM-1,2026-09-07,D,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag Filter DP Maximum,60.0
+VRM-1,2026-09-07,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag Filter DP Maximum & 201 Chamber damper out,270.0
+VRM-1,2026-09-07,B,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,Carbon Bursh Check,30.0
+VRM-1,2026-09-10,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Gear oil outlet temperature high,30.0
+VRM-1,2026-09-12,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Compressor trip then Main Bag house DP Maximam,40.0
+VRM-2,2026-09-13,D,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,Check & filter change by mechnical team,65.0
+VRM-1,2026-09-13,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,( ID fan) trip,75.0
+VRM-1,2026-09-13,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",HSMS Oil Temp High,20.0
+VRM-1,2026-09-13,B,Electrical Breakdown,Electrical,Other Confirmed Electrical Failures,Carbon Bursh Change,40.0
+VRM-2,2026-09-17,D,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,weigh feeder Techo fault alarm,55.0
+VRM-1,2026-09-17,D,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Gear box lubrication unit oil temperature high alarm,60.0
+VRM-1,2026-09-17,A,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,( ID fan) trip,70.0
+VRM-2,2026-09-21,A,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,weigh feeder Techo fault alarm,185.0
+VRM-2,2026-09-21,B,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Trip,40.0
+VRM-2,2026-09-22,D,Electrical Breakdown,Electrical,"Electrical Protection, Instrumentation & Control Faults",Trip,35.0
+VRM-1,2026-09-23,A,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Main Bag House,50.0
+VRM-1,2026-09-23,A,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Gear Box,20.0
+VRM-1,2026-09-26,D,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Heat Exchanger Jam,140.0
+VRM-1,2026-09-26,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Heat Exchanger Jam,75.0
+VRM-1,2026-09-29,A,Electrical Breakdown,Electrical,Conveyor & Feeder Mechanical Failures,Bucket Elevator 514 BE 1,95.0
+VRM-1,2026-09-30,B,Mechanical Breakdown,Mechanical,"Bearing, Gearbox & Lubrication Failures",Oil Temparature High,105.0
+VRM-1,2026-10-03,D,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,Mill Seal Fan,30.0
+VRM-1,2026-10-03,A,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Main Bag House,100.0
+VRM-1,2026-10-03,B,Electrical Breakdown,Electrical,Fan & Separator Mechanical/Electrical Failures,High Pressure Fan 513 FN 2,120.0
+VRM-1,2026-10-05,A,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,Sullair Compressor,50.0
+VRM-1,2026-10-10,A,Electrical Breakdown,Electrical,Motor & Electrical Drive Failures,531 MD 140 ( Main motor),100.0
+VRM-1,2026-10-10,B,Electrical Breakdown,Electrical,"Bearing, Gearbox & Lubrication Failures",Gear Box,45.0
+VRM-1,2026-10-11,B,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag House,30.0
+VRM-2,2026-10-15,A,Mechanical Breakdown,Mechanical,Other Confirmed Mechanical Failures,HAG,140.0
+VRM-2,2026-10-15,B,Mechanical Breakdown,Mechanical,Hydraulic & Pneumatic System Failures,531 HY 110,65.0
+VRM-2,2026-10-15,B,Mechanical Breakdown,Mechanical,Other Confirmed Mechanical Failures,531 LQ 145,35.0
+VRM-2,2026-10-17,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Bucket Elevator 531 BE 220,165.0
+VRM-1,2026-10-18,D,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Sullair compressure Perssure fall,60.0
+VRM-2,2026-10-18,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Belt Conveyor 511WF350,70.0
+VRM-1,2026-10-19,D,Electrical Breakdown,Electrical,Bag House / Bag Filter / Dust Collection,Main Bag House,60.0
+VRM-1,2026-10-19,B,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag House,50.0
+VRM-1,2026-10-19,C,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag house,25.0
+VRM-2,2026-10-20,A,Mechanical Breakdown,Mechanical,Conveyor & Feeder Mechanical Failures,Rotary Feeder 531 RF 503,240.0
+VRM-1,2026-10-23,C,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Rotary Feeder 531 RF 503,40.0
+VRM-1,2026-10-24,D,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag House,90.0
+VRM-2,2026-10-24,D,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Rotary Feeder 531 RF 503,90.0
+VRM-1,2026-10-24,A,Mechanical Breakdown,Mechanical,Bag House / Bag Filter / Dust Collection,Main Bag House,30.0

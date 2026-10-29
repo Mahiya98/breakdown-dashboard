@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VRM Breakdown Prediction Dashboard</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161c2c; --panel2: #1c2436; --border: #2a3450;
+    --text: #e7ebf3; --muted: #8b96b3; --accent: #5b8cff; --good: #3ecf8e;
+    --warn: #f5a623; --bad: #f45b69; --unknown: #5a6480;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--text); padding: 24px 16px 60px;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  #errorBanner {
+    display: none; background: rgba(244,91,105,0.15); border: 1px solid var(--bad);
+    color: var(--bad); padding: 12px 16px; border-radius: 8px; margin-bottom: 16px;
+    font-size: 13px; white-space: pre-wrap; font-family: monospace;
+  }
+  .controls {
+    display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 16px; margin-bottom: 18px;
+  }
+  .controls label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 4px; }
+  .controls select, .controls input {
+    background: var(--panel2); color: var(--text); border: 1px solid var(--border);
+    border-radius: 6px; padding: 7px 10px; font-size: 14px;
+  }
+  .controls button {
+    background: var(--panel2); color: var(--text); border: 1px solid var(--border);
+    border-radius: 6px; padding: 7px 12px; font-size: 13px; cursor: pointer;
+  }
+  .controls button:hover { border-color: var(--accent); }
+  .panel {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px 18px; margin-bottom: 18px;
+  }
+  .panel h2 { font-size: 15px; margin: 0 0 12px; color: var(--text); }
+  .panel .note { font-size: 11.5px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: .03em; }
+  tr:last-child td { border-bottom: none; }
+  .score-bar-wrap { display: flex; align-items: center; gap: 8px; }
+  .score-bar-bg { flex: 1; height: 8px; background: var(--panel2); border-radius: 4px; overflow: hidden; min-width: 60px; }
+  .score-bar-fill { height: 100%; border-radius: 4px; }
+  .score-val { font-size: 12.5px; color: var(--muted); width: 42px; text-align: right; }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; white-space: nowrap; }
+  .badge-pos { background: rgba(244,91,105,0.18); color: var(--bad); }
+  .badge-neg { background: rgba(62,207,142,0.18); color: var(--good); }
+  .badge-unk { background: rgba(90,100,128,0.25); color: var(--unknown); }
+  .badge-match { background: rgba(62,207,142,0.18); color: var(--good); }
+  .badge-miss { background: rgba(244,91,105,0.18); color: var(--bad); }
+  .top3-row {
+    display: grid; grid-template-columns: 32px 1fr 180px 90px; gap: 14px; align-items: center;
+    padding: 10px 0; border-bottom: 1px solid var(--border);
+  }
+  .top3-row:last-child { border-bottom: none; }
+  .top3-rank { font-size: 16px; font-weight: 700; color: var(--muted); }
+  .top3-label { font-size: 13.5px; font-weight: 600; }
+  .top3-sub { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+  .empty-state { color: var(--muted); font-size: 13px; padding: 10px 0; }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .legend span.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; }
+  footer { color: var(--muted); font-size: 11.5px; text-align: center; margin-top: 10px; }
+  @media (max-width: 600px) {
+    .top3-row { grid-template-columns: 24px 1fr; grid-template-rows: auto auto; }
+    table { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>VRM-1 / VRM-2 Breakdown Prediction Dashboard</h1>
+  <div class="subtitle">Select a feature date and machine. Predictions are real model outputs (models fit on the train split only, selected on validation ROC-AUC, never on test). Each category's score is the probability of an eligible breakdown of that type on the forecast target date.</div>
+
+  <div id="errorBanner"></div>
+
+  <div class="controls">
+    <div>
+      <label for="machineSelect">Machine</label>
+      <select id="machineSelect"></select>
+    </div>
+    <div>
+      <label for="dateSelect">Feature date (as-of day)</label>
+      <select id="dateSelect"></select>
+    </div>
+    <button id="prevDay">&larr; Prev day</button>
+    <button id="nextDay">Next day &rarr;</button>
+    <div style="margin-left:auto; font-size:12px; color:var(--muted);" id="splitTag">split: --</div>
+  </div>
+
+  <div class="panel">
+    <h2>Top risk categories for the selected date (ranked by predicted score)</h2>
+    <div id="top3Container"></div>
+    <div class="note">Ranking is over the 3 breakdown categories this project predicts (electrical, mechanical, any-eligible) &mdash; "any" is the union of the two and is included because it was the originally validated target; it is not an independent 4th category. Detailed-reason-level ranking (the finer-grained "top 3 specific reasons") is not available yet &mdash; see <code>step10_reason_modeling_plan.md</code>, which documents that this requires a data audit and model training that has not been completed.</div>
+  </div>
+
+  <div class="panel">
+    <h2>Per-horizon detail: predicted vs. actual</h2>
+    <table>
+      <thead><tr><th>Horizon</th><th>Category</th><th>Target date</th><th>Predicted score</th><th>Predicted label</th><th>Actual</th><th>Match</th></tr></thead>
+      <tbody id="detailBody"></tbody>
+    </table>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--bad)"></span>Breakdown predicted / occurred</span>
+      <span><span class="dot" style="background:var(--good)"></span>No breakdown predicted / occurred</span>
+      <span><span class="dot" style="background:var(--unknown)"></span>Actual unknown (future date beyond test split, or label masked as unreliable)</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Model accuracy (validated on held-out chronological splits, not date-specific)</h2>
+    <table>
+      <thead><tr><th>Category</th><th>Horizon</th><th>Model</th><th>Val ROC-AUC</th><th>Test ROC-AUC</th><th>Test Precision</th><th>Test Recall</th><th>Test F1</th><th>Test Bal. Acc.</th><th>Test support (pos/neg)</th></tr></thead>
+      <tbody id="metricsBody"></tbody>
+    </table>
+    <div class="note">These metrics come from the pre-validated model comparison (<code>step10_corrected_metrics.csv</code> / <code>step10_electrical_mechanical_results.csv</code>), evaluated on the chronological held-out test split &mdash; they are the same regardless of which date/machine you select above. Mechanical-category test ROC-AUC is near or below 0.5 for all horizons: a known small-sample limitation (VRM-2 has only 9 positive test cases per horizon), not a dashboard defect &mdash; see <code>phase2_full_metrics_report.md</code>.</div>
+  </div>
+
+  <footer id="genNote"></footer>
+</div>
+
+<script id="dashboard-data" type="application/json">__DASHBOARD_DATA_JSON__</script>
+<script>
+function showError(msg) {
+  const b = document.getElementById('errorBanner');
+  b.style.display = 'block';
+  b.textContent = 'Dashboard failed to load data: ' + msg;
+}
+window.addEventListener('error', function(e) { showError(e.message); });
+
+try {
+  const bundle = JSON.parse(document.getElementById('dashboard-data').textContent);
+  const MACH = bundle.machines, DATES = bundle.dates, CATS = bundle.cats, MODELS = bundle.models, HORIZONS = bundle.horizons, SPLITS = bundle.splits;
+  // row: [machine_i, date_i, horizon_i, cat_i, model_i, score, actual(0/1/null), split_i]
+  const rows = bundle.rows;
+  const metrics = bundle.metrics;
+  document.getElementById('genNote').textContent = bundle.generated_note;
+
+  function horizonDays(hName) { return parseInt(hName.split('_').pop(), 10); }
+  function addDays(dateStr, n) {
+    const d = new Date(dateStr + 'T00:00:00Z');
+    d.setUTCDate(d.getUTCDate() + n);
+    return d.toISOString().slice(0, 10);
+  }
+  function horizonLabel(hName) { return hName.replace('Day_Plus_', 'Day+'); }
+
+  const machineSelect = document.getElementById('machineSelect');
+  MACH.forEach((m, i) => {
+    const opt = document.createElement('option'); opt.value = i; opt.textContent = m;
+    machineSelect.appendChild(opt);
+  });
+
+  let datesForMachine = [];
+  const dateSelect = document.getElementById('dateSelect');
+
+  function refreshDates() {
+    const mi = parseInt(machineSelect.value, 10);
+    const dateIdxSet = new Set();
+    for (const r of rows) { if (r[0] === mi) dateIdxSet.add(r[1]); }
+    datesForMachine = [...dateIdxSet].sort((a, b) => a - b);
+    dateSelect.innerHTML = '';
+    datesForMachine.forEach(di => {
+      const opt = document.createElement('option'); opt.value = di; opt.textContent = DATES[di];
+      dateSelect.appendChild(opt);
+    });
+    if (datesForMachine.length) dateSelect.value = datesForMachine[datesForMachine.length - 1];
+  }
+
+  function scoreColor(score) {
+    if (score >= 0.6) return 'var(--bad)';
+    if (score >= 0.35) return 'var(--warn)';
+    return 'var(--good)';
+  }
+  function actualBadge(actual) {
+    if (actual === null || actual === undefined) return '<span class="badge badge-unk">unknown</span>';
+    return actual === 1 ? '<span class="badge badge-pos">breakdown</span>' : '<span class="badge badge-neg">none</span>';
+  }
+  function matchBadge(predLabel, actual) {
+    if (actual === null || actual === undefined) return '<span class="badge badge-unk">n/a</span>';
+    return predLabel === actual ? '<span class="badge badge-match">match</span>' : '<span class="badge badge-miss">miss</span>';
+  }
+
+  function render() {
+    const mi = parseInt(machineSelect.value, 10);
+    const di = parseInt(dateSelect.value, 10);
+    const sel = rows.filter(r => r[0] === mi && r[1] === di);
+    document.getElementById('splitTag').textContent = 'split: ' + (sel[0] ? SPLITS[sel[0][7]] : '--');
+
+    const expanded = sel.map(r => {
+      const horizon = HORIZONS[r[2]], cat = CATS[r[3]], model = MODELS[r[4]], score = r[5], actual = r[6];
+      const predLabel = score >= 0.5 ? 1 : 0;
+      const targetDate = addDays(DATES[di], horizonDays(horizon));
+      return { horizon, cat, model, score, actual, predLabel, targetDate };
+    });
+
+    const ranked = [...expanded].sort((a, b) => b.score - a.score).slice(0, 3);
+    const top3Container = document.getElementById('top3Container');
+    top3Container.innerHTML = '';
+    if (ranked.length === 0) {
+      top3Container.innerHTML = '<div class="empty-state">No predictions for this date/machine.</div>';
+    } else {
+      ranked.forEach((r, i) => {
+        const div = document.createElement('div');
+        div.className = 'top3-row';
+        div.innerHTML = `
+          <div class="top3-rank">#${i+1}</div>
+          <div>
+            <div class="top3-label">${r.cat.toUpperCase()} breakdown risk &mdash; ${horizonLabel(r.horizon)}</div>
+            <div class="top3-sub">target date ${r.targetDate} &middot; model: ${r.model}</div>
+          </div>
+          <div class="score-bar-wrap">
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:${Math.round(r.score*100)}%;background:${scoreColor(r.score)}"></div></div>
+            <div class="score-val">${(r.score*100).toFixed(1)}%</div>
+          </div>
+          <div>${actualBadge(r.actual)}</div>
+        `;
+        top3Container.appendChild(div);
+      });
+    }
+
+    const hOrder = { 'Day_Plus_1': 1, 'Day_Plus_2': 2, 'Day_Plus_3': 3 };
+    const cOrder = { 'electrical': 1, 'mechanical': 2, 'any': 3 };
+    const sorted = [...expanded].sort((a, b) => (hOrder[a.horizon]-hOrder[b.horizon]) || (cOrder[a.cat]-cOrder[b.cat]));
+    const body = document.getElementById('detailBody');
+    body.innerHTML = '';
+    sorted.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${horizonLabel(r.horizon)}</td>
+        <td>${r.cat}</td>
+        <td>${r.targetDate}</td>
+        <td>
+          <div class="score-bar-wrap">
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:${Math.round(r.score*100)}%;background:${scoreColor(r.score)}"></div></div>
+            <div class="score-val">${(r.score*100).toFixed(1)}%</div>
+          </div>
+        </td>
+        <td>${r.predLabel === 1 ? '<span class="badge badge-pos">breakdown</span>' : '<span class="badge badge-neg">none</span>'}</td>
+        <td>${actualBadge(r.actual)}</td>
+        <td>${matchBadge(r.predLabel, r.actual)}</td>
+      `;
+      body.appendChild(tr);
+    });
+
+    const mbody = document.getElementById('metricsBody');
+    mbody.innerHTML = '';
+    const msorted = [...metrics].sort((a, b) => (hOrder[a.horizon]-hOrder[b.horizon]) || (cOrder[a.category]-cOrder[b.category]));
+    msorted.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${r.category}</td>
+        <td>${horizonLabel(r.horizon)}</td>
+        <td>${r.model_used}</td>
+        <td>${r.val_roc_auc.toFixed(3)}</td>
+        <td>${r.test_roc_auc.toFixed(3)}</td>
+        <td>${r.test_precision.toFixed(3)}</td>
+        <td>${r.test_recall.toFixed(3)}</td>
+        <td>${r.test_f1.toFixed(3)}</td>
+        <td>${r.test_balanced_accuracy.toFixed(3)}</td>
+        <td>${r.test_support_pos} / ${r.test_support_neg}</td>
+      `;
+      mbody.appendChild(tr);
+    });
+  }
+
+  machineSelect.addEventListener('change', () => { refreshDates(); render(); });
+  dateSelect.addEventListener('change', render);
+  document.getElementById('prevDay').addEventListener('click', () => {
+    const idx = datesForMachine.indexOf(parseInt(dateSelect.value, 10));
+    if (idx > 0) { dateSelect.value = datesForMachine[idx - 1]; render(); }
+  });
+  document.getElementById('nextDay').addEventListener('click', () => {
+    const idx = datesForMachine.indexOf(parseInt(dateSelect.value, 10));
+    if (idx >= 0 && idx < datesForMachine.length - 1) { dateSelect.value = datesForMachine[idx + 1]; render(); }
+  });
+
+  machineSelect.value = 0;
+  refreshDates();
+  render();
+} catch (e) {
+  showError((e && e.message) ? e.message : String(e));
+  throw e;
+}
+</script>
+</body>
+</html>
