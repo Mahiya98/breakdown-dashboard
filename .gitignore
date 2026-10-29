@@ -7,3 +7,4 @@ data/*.csv
 pipeline/**/*.pyc
 pipeline/**/*.json
 pipeline/**/*.csv
+pipeline/dashboard.html
