@@ -72,6 +72,7 @@ def main():
                 _rg(reason["reason_group"]),
                 _rd(reason["reason_detail"]),
                 reason["downtime_minutes"],
+                0 if reason["classification"] == "Electrical" else 1,
             ])
 
         rows.append([

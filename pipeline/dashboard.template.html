@@ -114,7 +114,7 @@
       <span><span class="dot" style="background:var(--good)"></span>No breakdown predicted / occurred</span>
       <span><span class="dot" style="background:var(--unknown)"></span>Actual unknown (future date beyond test split, or label masked as unreliable)</span>
     </div>
-    <div class="note">The reason column is the real logged reason/grouping for that target date (e.g. "Bag House / Bag Filter / Dust Collection &mdash; LRS Problem"), shown whenever a breakdown actually occurred &mdash; it is ground truth, not a model prediction. It is blank when no breakdown was logged that day, or when known reasons that day don't belong to this row's category. Up to the top 3 reasons for that day are shown, ranked by logged downtime minutes. A dedicated model that predicts the likely reason in advance has not been built yet (see <code>step10_reason_modeling_plan.md</code>).</div>
+    <div class="note">The reason column is the real logged reason/grouping for that target date (e.g. "Bag House / Bag Filter / Dust Collection &mdash; LRS Problem"), shown whenever a breakdown was actually logged that day &mdash; it is ground truth, not a model prediction, and is blank only when no breakdown was logged that day. Up to the top 3 reasons for that day are shown, ranked by logged downtime minutes, regardless of this row's own category. A small grey tag (e.g. "Mechanical") appears on a reason when its real classification differs from this row's electrical/mechanical category &mdash; that happens because the electrical/mechanical target labels used to train the models are defined from overlapping failure-family lists (most families count toward both), so a day can be labeled electrical_breakdown=1 even when the only logged reason that day was mechanical. A dedicated model that predicts the likely reason in advance has not been built yet (see <code>step10_reason_modeling_plan.md</code>).</div>
   </div>
 
   <div class="panel">
@@ -198,12 +198,21 @@ try {
     const sel = rows.filter(r => r[0] === mi && r[1] === di);
     document.getElementById('splitTag').textContent = 'split: ' + (sel[0] ? SPLITS[sel[0][7]] : '--');
 
-    function reasonsHtml(reasons) {
+    function reasonsHtml(reasons, rowCategory) {
       if (!reasons || reasons.length === 0) return '<span style="color:var(--muted)">&mdash;</span>';
-      return reasons.map(([gi, di, minutes]) => {
-        const group = REASON_GROUPS[gi], detail = REASON_DETAILS[di];
+      return reasons.map(([gi, dti, minutes, clsCode]) => {
+        const group = REASON_GROUPS[gi], detail = REASON_DETAILS[dti];
         const mins = (minutes === null || minutes === undefined) ? '' : ` (${minutes}m)`;
-        return `<div style="margin-bottom:2px;"><strong>${group}</strong> &mdash; ${detail}${mins}</div>`;
+        const cls = clsCode === 0 ? 'Electrical' : 'Mechanical';
+        // Flag when this reason's real classification doesn't match the row's own
+        // category -- expected for 'any' rows, but worth calling out on an
+        // electrical/mechanical row since the target label that marked this row's
+        // actual=1 is defined from overlapping failure families (see
+        // generate_dashboard_predictions.py), so it can be 1 even when every
+        // logged reason that day was the other classification.
+        const mismatch = rowCategory && rowCategory !== 'any' && cls.toLowerCase() !== rowCategory;
+        const tag = mismatch ? ` <span class="badge badge-unk" title="Logged as ${cls}, differs from this row's ${rowCategory} category">${cls}</span>` : '';
+        return `<div style="margin-bottom:2px;"><strong>${group}</strong> &mdash; ${detail}${mins}${tag}</div>`;
       }).join('');
     }
 
@@ -229,7 +238,7 @@ try {
           <div>
             <div class="top3-label">${r.cat.toUpperCase()} breakdown risk &mdash; ${horizonLabel(r.horizon)}</div>
             <div class="top3-sub">target date ${r.targetDate} &middot; model: ${r.model}</div>
-            ${r.reasons && r.reasons.length ? `<div class="top3-sub">actual reason: ${reasonsHtml(r.reasons)}</div>` : ''}
+            ${r.reasons && r.reasons.length ? `<div class="top3-sub">actual reason: ${reasonsHtml(r.reasons, r.cat)}</div>` : ''}
           </div>
           <div class="score-bar-wrap">
             <div class="score-bar-bg"><div class="score-bar-fill" style="width:${Math.round(r.score*100)}%;background:${scoreColor(r.score)}"></div></div>
@@ -261,7 +270,7 @@ try {
         <td>${r.predLabel === 1 ? '<span class="badge badge-pos">breakdown</span>' : '<span class="badge badge-neg">none</span>'}</td>
         <td>${actualBadge(r.actual)}</td>
         <td>${matchBadge(r.predLabel, r.actual)}</td>
-        <td style="font-size:12px;">${reasonsHtml(r.reasons)}</td>
+        <td style="font-size:12px;">${reasonsHtml(r.reasons, r.cat)}</td>
       `;
       body.appendChild(tr);
     });

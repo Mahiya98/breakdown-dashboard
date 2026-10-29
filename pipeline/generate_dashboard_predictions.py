@@ -145,14 +145,18 @@ def main():
 
             machine_id = df["machine_id"].iloc[i]
             target_date = (df["Date"].iloc[i] + pd.Timedelta(days=int(horizon.split("_")[-1]))).strftime("%Y-%m-%d")
+            # Show every actual reason logged for that day, regardless of this row's
+            # category. We deliberately do NOT filter to classification==category here:
+            # the electrical/mechanical *target labels* (A_electrical_breakdown /
+            # A_mechanical_breakdown in make_forward_targets.py) are defined from
+            # overlapping failure-family lists -- most families count toward BOTH
+            # labels -- so a day can be labeled electrical_breakdown=1 purely because
+            # of a mechanically-classified event. Filtering reasons by category would
+            # then hide the true logged reason behind a label-definition artifact.
+            # Each reason carries its own real classification so that mismatch (e.g.
+            # a "Mechanical"-tagged reason on an "electrical" category row) stays
+            # visible rather than silently blank.
             reasons = actual_reasons.get((machine_id, target_date), [])
-            # Only surface reasons that match this category's classification
-            # (electrical model -> electrical reasons, mechanical -> mechanical,
-            # 'any' -> all actual reasons for that day).
-            if category == "electrical":
-                reasons = [r for r in reasons if r["classification"] == "Electrical"]
-            elif category == "mechanical":
-                reasons = [r for r in reasons if r["classification"] == "Mechanical"]
 
             records.append({
                 "machine_id": machine_id,
@@ -165,7 +169,7 @@ def main():
                 "predicted_label": int(proba[i] >= 0.5),
                 "actual_label": actual_out,
                 "split": split_label.iloc[i],
-                "actual_reasons": reasons,  # ground-truth only; [] if none logged for that day/category
+                "actual_reasons": reasons,  # ground-truth only; [] if no breakdown logged for that day
             })
 
     pred_df = pd.DataFrame(records)
