@@ -1,43 +1,36 @@
-# Breakdown Analysis Dashboard
+# VRM-1 / VRM-2 Breakdown Prediction Dashboard
 
-**Live:** https://mahiya98.github.io/breakdown-dashboard/
+**Live dashboard:** https://mahiya98.github.io/breakdown-dashboard/vrm-prediction/
 
-Interactive dashboard that pulls machine **breakdown / downtime** logs from Google Sheets,
-normalises them, and shows charts + KPIs with filters for **SBU, Mill/Machine, Breakdown Type,
-Year and Date range**.
+Predicts the probability of an electrical or mechanical breakdown on VRM-1 / VRM-2, 1, 2, or 3 days
+ahead, and shows the real logged breakdown reason (group + specific reason) alongside each
+prediction wherever one actually occurred.
 
-## Run
+## Repository layout
 
-Double-click `start.bat` (or run `.\start.ps1`). It will:
+| Path | Purpose |
+| --- | --- |
+| `vrm-prediction/index.html` | The published dashboard (this is the file GitHub Pages serves). |
+| `pipeline/` | The full retrain pipeline: source workbook, feature engineering, target definition, model training, scoring, and dashboard build scripts. |
+| `deploy_and_publish.sh` | One-command retrain + republish (run from the repo root). |
 
-1. `node build.mjs` – download all sheets and (re)generate `data\data.json` + `data\meta.json`
-2. open `http://localhost:8090/` and serve the dashboard
+## Retraining and republishing
 
-Open: **http://localhost:8090/**
+```bash
+./deploy_and_publish.sh
+```
 
-## Files
+This re-runs the full pipeline against `pipeline/VRM_Jul2025_Oct2026_Combined.xlsx`, rebuilds the
+dashboard, copies it to `vrm-prediction/index.html`, and commits + pushes — only if the output
+actually changed.
 
-| File | Purpose |
-|------|---------|
-| `build.mjs` | Fetches the Google Sheets, parses/normalises rows, writes `data\data.json` |
-| `dashboard.template.html` | Dashboard UI (filters + Chart.js charts). Source of `dashboard.html` |
-| `dashboard.html` | Generated page (loads `data/data.json` at runtime) |
-| `server.mjs` | Tiny static file server on port 8090 |
-| `vendor/chart.umd.min.js` | Chart.js (bundled locally, works offline) |
-| `data/` | Downloaded CSVs + parsed `data.json` / `meta.json` |
+## Pipeline stages (run by `pipeline/run_pipeline.sh`)
 
-## Data sources
+1. `data_pipeline.py` — builds the feature matrix from the source workbook.
+2. `run_target_definition.py` — builds the audited breakdown-reason taxonomy and per-day targets.
+3. `make_forward_targets.py` — shifts targets forward to Day+1/2/3.
+4. `run_modeling.py`, `run_modeling_electrical_mechanical.py` — trains and compares candidate models per category/horizon, selecting on validation ROC-AUC only.
+5. `generate_dashboard_predictions.py` — refits the selected models and scores every row, joining in the real breakdown reason per day.
+6. `build_dashboard.py` — compiles everything into `pipeline/dashboard.html`.
 
-13 Google Sheets (tabs named "<x> Breakdown"). Two are **not shared publicly** and are skipped
-automatically (a note is shown in the dashboard):
-
-- Bending Breakdown
-- Tapeline Breakdown
-
-To include them: set link sharing to *Anyone with the link → Viewer*, then re-run `node build.mjs`.
-
-## Adding / changing sheets
-
-Edit the `SHEETS` array at the top of `build.mjs` (name, spreadsheet id, gid, fallback SBU).
-Column names are auto-detected (SBU/section, Date, Mill/Machine, Breakdown Type, Breakdown Name,
-Reason, Downtime, Shift, Month, …), so slight header differences across sheets are handled.
+See `pipeline/README.md` for details on each script.
