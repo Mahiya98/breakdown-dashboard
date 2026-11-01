@@ -102,7 +102,7 @@
   <div class="panel">
     <h2>Top risk categories for the selected date (ranked by predicted score)</h2>
     <div id="top3Container"></div>
-    <div class="note">Ranking is over the 3 breakdown categories this project predicts (electrical, mechanical, any-eligible) &mdash; "any" is the union of the two and is included because it was the originally validated target; it is not an independent 4th category. Detailed-reason-level ranking (the finer-grained "top 3 specific reasons") is not available yet &mdash; see <code>step10_reason_modeling_plan.md</code>, which documents that this requires a data audit and model training that has not been completed.</div>
+    <div class="note">Ranking is over the 2 breakdown categories shown on this dashboard: electrical and mechanical. A third, "any-eligible" model (the union of the two, and the originally validated target) was also trained and is still scored internally, but is hidden here since only electrical/mechanical breakdowns are wanted on this view. Detailed-reason-level ranking (the finer-grained "top 3 specific reasons") is not available yet &mdash; see <code>step10_reason_modeling_plan.md</code>, which documents that this requires a data audit and model training that has not been completed.</div>
   </div>
 
   <div class="panel">
@@ -214,29 +214,38 @@ try {
 
     function reasonsHtml(reasons, rowCategory) {
       if (!reasons || reasons.length === 0) return '<span style="color:var(--muted)">&mdash;</span>';
-      return reasons.map(([gi, dti, minutes, clsCode]) => {
+      // Show only the reasons whose TRUE logged classification matches this row's
+      // own category: the electrical panel should only ever show electrical
+      // reasons, the mechanical panel only mechanical ones. (The underlying
+      // actual=1 label can fire from the OTHER classification too, because the
+      // electrical/mechanical target-label families overlap -- see
+      // generate_dashboard_predictions.py -- but that is a labelling detail, not
+      // something that should leak a mechanical reason into the electrical view.)
+      const filtered = reasons.filter(([gi, dti, minutes, clsCode]) => {
+        const cls = clsCode === 0 ? 'electrical' : 'mechanical';
+        return !rowCategory || rowCategory === 'any' || cls === rowCategory;
+      });
+      if (filtered.length === 0) return '<span style="color:var(--muted)">&mdash;</span>';
+      return filtered.map(([gi, dti, minutes, clsCode]) => {
         const group = REASON_GROUPS[gi], detail = REASON_DETAILS[dti];
         const mins = (minutes === null || minutes === undefined) ? '' : ` (${minutes}m)`;
-        const cls = clsCode === 0 ? 'Electrical' : 'Mechanical';
-        // Flag when this reason's real classification doesn't match the row's own
-        // category -- expected for 'any' rows, but worth calling out on an
-        // electrical/mechanical row since the target label that marked this row's
-        // actual=1 is defined from overlapping failure families (see
-        // generate_dashboard_predictions.py), so it can be 1 even when every
-        // logged reason that day was the other classification.
-        const mismatch = rowCategory && rowCategory !== 'any' && cls.toLowerCase() !== rowCategory;
-        const tag = mismatch ? ` <span class="badge badge-unk" title="Logged as ${cls}, differs from this row's ${rowCategory} category">${cls}</span>` : '';
-        return `<div style="margin-bottom:2px;"><strong>${group}</strong> &mdash; ${detail}${mins}${tag}</div>`;
+        return `<div style="margin-bottom:2px;"><strong>${group}</strong> &mdash; ${detail}${mins}</div>`;
       }).join('');
     }
 
-    const expanded = sel.map(r => {
-      const horizon = HORIZONS[r[2]], cat = CATS[r[3]], model = MODELS[r[4]], score = r[5], actual = r[6];
-      const reasons = r[8] || [];
-      const predLabel = score >= 0.5 ? 1 : 0;
-      const targetDate = addDays(DATES[di], horizonDays(horizon));
-      return { horizon, cat, model, score, actual, predLabel, targetDate, reasons };
-    });
+    // 'any' is the union of electrical+mechanical and was only the originally
+    // validated target -- the dashboard shows electrical and mechanical only,
+    // per the operating team's request, so 'any' rows are dropped here before
+    // anything is ranked, tabled, or counted.
+    const expanded = sel
+      .map(r => {
+        const horizon = HORIZONS[r[2]], cat = CATS[r[3]], model = MODELS[r[4]], score = r[5], actual = r[6];
+        const reasons = r[8] || [];
+        const predLabel = score >= 0.5 ? 1 : 0;
+        const targetDate = addDays(DATES[di], horizonDays(horizon));
+        return { horizon, cat, model, score, actual, predLabel, targetDate, reasons };
+      })
+      .filter(r => r.cat !== 'any');
 
     const ranked = [...expanded].sort((a, b) => b.score - a.score).slice(0, 3);
     const top3Container = document.getElementById('top3Container');
@@ -291,7 +300,7 @@ try {
 
     const mbody = document.getElementById('metricsBody');
     mbody.innerHTML = '';
-    const msorted = [...metrics].sort((a, b) => (hOrder[a.horizon]-hOrder[b.horizon]) || (cOrder[a.category]-cOrder[b.category]));
+    const msorted = [...metrics].filter(r => r.category !== 'any').sort((a, b) => (hOrder[a.horizon]-hOrder[b.horizon]) || (cOrder[a.category]-cOrder[b.category]));
     msorted.forEach(r => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
