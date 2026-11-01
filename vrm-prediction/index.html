@@ -108,7 +108,7 @@
   <div class="panel">
     <h2>Per-horizon detail: predicted vs. actual</h2>
     <table>
-      <thead><tr><th>Horizon</th><th>Category</th><th>Target date</th><th>Predicted score</th><th>Predicted label</th><th>Actual</th><th>Match</th><th>Actual breakdown reason (ground truth)</th></tr></thead>
+      <thead><tr><th>Horizon</th><th>Category</th><th>Target date</th><th>Predicted score</th><th>Predicted label</th><th>Actual</th><th>Match</th><th>Breakdown reason group</th><th>Actual breakdown reason (ground truth)</th></tr></thead>
       <tbody id="detailBody"></tbody>
     </table>
     <div class="legend">
@@ -212,21 +212,48 @@ try {
     const sel = rows.filter(r => r[0] === mi && r[1] === di);
     document.getElementById('splitTag').textContent = 'split: ' + (sel[0] ? SPLITS[sel[0][7]] : '--');
 
-    function reasonsHtml(reasons, rowCategory) {
-      if (!reasons || reasons.length === 0) return '<span style="color:var(--muted)">&mdash;</span>';
-      // Show only the reasons whose TRUE logged classification matches this row's
-      // own category: the electrical panel should only ever show electrical
-      // reasons, the mechanical panel only mechanical ones. (The underlying
-      // actual=1 label can fire from the OTHER classification too, because the
-      // electrical/mechanical target-label families overlap -- see
-      // generate_dashboard_predictions.py -- but that is a labelling detail, not
-      // something that should leak a mechanical reason into the electrical view.)
-      const filtered = reasons.filter(([gi, dti, minutes, clsCode]) => {
+    // Show only the reasons whose TRUE logged classification matches this row's
+    // own category: the electrical panel should only ever show electrical
+    // reasons, the mechanical panel only mechanical ones. (The underlying
+    // actual=1 label can fire from the OTHER classification too, because the
+    // electrical/mechanical target-label families overlap -- see
+    // generate_dashboard_predictions.py -- but that is a labelling detail, not
+    // something that should leak a mechanical reason into the electrical view.)
+    function filteredReasons(reasons, rowCategory) {
+      if (!reasons || reasons.length === 0) return [];
+      return reasons.filter(([gi, dti, minutes, clsCode]) => {
         const cls = clsCode === 0 ? 'electrical' : 'mechanical';
         return !rowCategory || rowCategory === 'any' || cls === rowCategory;
       });
+    }
+
+    // The broad failure family / grouping (e.g. "Bearing, Gearbox & Lubrication
+    // Failures") -- shown on its own so the grouping is visible without reading
+    // the specific-reason text.
+    function reasonGroupHtml(reasons, rowCategory) {
+      const filtered = filteredReasons(reasons, rowCategory);
       if (filtered.length === 0) return '<span style="color:var(--muted)">&mdash;</span>';
-      return filtered.map(([gi, dti, minutes, clsCode]) => {
+      const groups = [...new Set(filtered.map(([gi]) => REASON_GROUPS[gi]))];
+      return groups.map(g => `<div style="margin-bottom:2px;"><strong>${g}</strong></div>`).join('');
+    }
+
+    // The specific logged reason text (e.g. "Belt joint problem"), with its
+    // downtime minutes -- the real, granular reason within its group above.
+    function reasonDetailHtml(reasons, rowCategory) {
+      const filtered = filteredReasons(reasons, rowCategory);
+      if (filtered.length === 0) return '<span style="color:var(--muted)">&mdash;</span>';
+      return filtered.map(([gi, dti, minutes]) => {
+        const detail = REASON_DETAILS[dti];
+        const mins = (minutes === null || minutes === undefined) ? '' : ` (${minutes}m)`;
+        return `<div style="margin-bottom:2px;">${detail}${mins}</div>`;
+      }).join('');
+    }
+
+    // Combined "Group — Detail (mins)" line, used in the top-3 panel.
+    function reasonsHtml(reasons, rowCategory) {
+      const filtered = filteredReasons(reasons, rowCategory);
+      if (filtered.length === 0) return '<span style="color:var(--muted)">&mdash;</span>';
+      return filtered.map(([gi, dti, minutes]) => {
         const group = REASON_GROUPS[gi], detail = REASON_DETAILS[dti];
         const mins = (minutes === null || minutes === undefined) ? '' : ` (${minutes}m)`;
         return `<div style="margin-bottom:2px;"><strong>${group}</strong> &mdash; ${detail}${mins}</div>`;
@@ -261,7 +288,7 @@ try {
           <div>
             <div class="top3-label">${r.cat.toUpperCase()} breakdown risk &mdash; ${horizonLabel(r.horizon)}</div>
             <div class="top3-sub">target date ${r.targetDate} &middot; model: ${r.model}</div>
-            ${r.reasons && r.reasons.length ? `<div class="top3-sub">actual reason: ${reasonsHtml(r.reasons, r.cat)}</div>` : ''}
+            ${r.reasons && r.reasons.length ? `<div class="top3-sub">breakdown reason group: ${reasonGroupHtml(r.reasons, r.cat)}</div><div class="top3-sub">actual reason: ${reasonDetailHtml(r.reasons, r.cat)}</div>` : ''}
           </div>
           <div class="score-bar-wrap">
             <div class="score-bar-bg"><div class="score-bar-fill" style="width:${Math.round(r.score*100)}%;background:${scoreColor(r.score)}"></div></div>
@@ -293,7 +320,8 @@ try {
         <td>${r.predLabel === 1 ? '<span class="badge badge-pos">breakdown</span>' : '<span class="badge badge-neg">none</span>'}</td>
         <td>${actualBadge(r.actual)}</td>
         <td>${matchBadge(r.predLabel, r.actual)}</td>
-        <td style="font-size:12px;">${reasonsHtml(r.reasons, r.cat)}</td>
+        <td style="font-size:12px;">${reasonGroupHtml(r.reasons, r.cat)}</td>
+        <td style="font-size:12px;">${reasonDetailHtml(r.reasons, r.cat)}</td>
       `;
       body.appendChild(tr);
     });
