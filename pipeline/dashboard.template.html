@@ -94,8 +94,10 @@
     </div>
     <button id="prevDay">&larr; Prev day</button>
     <button id="nextDay">Next day &rarr;</button>
+    <button id="jumpBreakdown" title="Jump to the nearest feature date whose Day+1 target actually had a logged breakdown">&#9889; Jump to a logged breakdown day</button>
     <div style="margin-left:auto; font-size:12px; color:var(--muted);" id="splitTag">split: --</div>
   </div>
+  <div class="note" style="margin-top:4px;">Dates marked &#9679; in the dropdown below had at least one logged breakdown on one of their Day+1/2/3 target dates &mdash; most dates have none, so a blank "Actual breakdown reason" column is expected and correct on an unmarked date.</div>
 
   <div class="panel">
     <h2>Top risk categories for the selected date (ranked by predicted score)</h2>
@@ -165,14 +167,26 @@ try {
   let datesForMachine = [];
   const dateSelect = document.getElementById('dateSelect');
 
+  // Feature dates (for the current machine) whose Day+1/2/3 target actually had a
+  // logged breakdown (reasons.length > 0) on ANY category row -- used to mark the
+  // date dropdown and to power the "jump to a logged breakdown day" button, since
+  // most dates have no breakdown at all and picking one blind looks like a bug.
+  let breakdownDateIdxSet = new Set();
+
   function refreshDates() {
     const mi = parseInt(machineSelect.value, 10);
     const dateIdxSet = new Set();
-    for (const r of rows) { if (r[0] === mi) dateIdxSet.add(r[1]); }
+    breakdownDateIdxSet = new Set();
+    for (const r of rows) {
+      if (r[0] !== mi) continue;
+      dateIdxSet.add(r[1]);
+      if (r[8] && r[8].length) breakdownDateIdxSet.add(r[1]);
+    }
     datesForMachine = [...dateIdxSet].sort((a, b) => a - b);
     dateSelect.innerHTML = '';
     datesForMachine.forEach(di => {
-      const opt = document.createElement('option'); opt.value = di; opt.textContent = DATES[di];
+      const opt = document.createElement('option'); opt.value = di;
+      opt.textContent = (breakdownDateIdxSet.has(di) ? '● ' : '  ') + DATES[di];
       dateSelect.appendChild(opt);
     });
     if (datesForMachine.length) dateSelect.value = datesForMachine[datesForMachine.length - 1];
@@ -305,6 +319,15 @@ try {
   document.getElementById('nextDay').addEventListener('click', () => {
     const idx = datesForMachine.indexOf(parseInt(dateSelect.value, 10));
     if (idx >= 0 && idx < datesForMachine.length - 1) { dateSelect.value = datesForMachine[idx + 1]; render(); }
+  });
+  document.getElementById('jumpBreakdown').addEventListener('click', () => {
+    if (!breakdownDateIdxSet.size) return;
+    const cur = parseInt(dateSelect.value, 10);
+    // nearest marked date at or after the current one; wrap to the first marked date otherwise.
+    const marked = datesForMachine.filter(di => breakdownDateIdxSet.has(di));
+    const next = marked.find(di => di >= cur);
+    dateSelect.value = next !== undefined ? next : marked[0];
+    render();
   });
 
   machineSelect.value = 0;
