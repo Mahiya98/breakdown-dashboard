@@ -18,7 +18,8 @@ cp pipeline/dashboard.html vrm-prediction/index.html
 
 echo "=== Committing ==="
 git add vrm-prediction/index.html pipeline/dashboard_predictions.csv pipeline/dashboard_accuracy_metrics.csv \
-        pipeline/model_comparison_results.csv pipeline/step10_electrical_mechanical_results.csv 2>/dev/null || \
+        pipeline/model_comparison_results.csv pipeline/step10_electrical_mechanical_results.csv \
+        pipeline/reason_predictions.csv pipeline/reason_model_metrics.csv 2>/dev/null || \
 git add vrm-prediction/index.html
 
 if git diff --cached --quiet; then

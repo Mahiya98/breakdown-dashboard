@@ -14,3 +14,5 @@ pipeline/excluded_columns_log.json
 #   pipeline/dashboard_accuracy_metrics.csv
 #   pipeline/model_comparison_results.csv
 #   pipeline/step10_electrical_mechanical_results.csv
+#   pipeline/reason_predictions.csv
+#   pipeline/reason_model_metrics.csv

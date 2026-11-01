@@ -31,6 +31,7 @@ actually changed.
 3. `make_forward_targets.py` — shifts targets forward to Day+1/2/3.
 4. `run_modeling.py`, `run_modeling_electrical_mechanical.py` — trains and compares candidate models per category/horizon, selecting on validation ROC-AUC only.
 5. `generate_dashboard_predictions.py` — refits the selected models and scores every row, joining in the real breakdown reason per day.
-6. `build_dashboard.py` — compiles everything into `pipeline/dashboard.html`.
+6. `generate_reason_predictions.py` — trains small multiclass models predicting the likely failure-family group for every row (low confidence; see dashboard note).
+7. `build_dashboard.py` — compiles everything into `pipeline/dashboard.html`.
 
 See `pipeline/README.md` for details on each script.

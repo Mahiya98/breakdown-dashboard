@@ -102,13 +102,13 @@
   <div class="panel">
     <h2>Top risk categories for the selected date (ranked by predicted score)</h2>
     <div id="top3Container"></div>
-    <div class="note">Ranking is over the 2 breakdown categories shown on this dashboard: electrical and mechanical. A third, "any-eligible" model (the union of the two, and the originally validated target) was also trained and is still scored internally, but is hidden here since only electrical/mechanical breakdowns are wanted on this view. Detailed-reason-level ranking (the finer-grained "top 3 specific reasons") is not available yet &mdash; see <code>step10_reason_modeling_plan.md</code>, which documents that this requires a data audit and model training that has not been completed.</div>
+    <div class="note">Ranking is over the 2 breakdown categories shown on this dashboard: electrical and mechanical. A third, "any-eligible" model (the union of the two, and the originally validated target) was also trained and is still scored internally, but is hidden here since only electrical/mechanical breakdowns are wanted on this view. A predicted failure-family group (if a breakdown occurs) is now shown per row below with a confidence score &mdash; see the "Reason-prediction model quality" note further down for its (low) reliability. Detailed-reason-level ranking (the finer-grained "top 3 specific reasons", as opposed to the broader failure-family group) is still not available.</div>
   </div>
 
   <div class="panel">
     <h2>Per-horizon detail: predicted vs. actual</h2>
     <table>
-      <thead><tr><th>Horizon</th><th>Category</th><th>Target date</th><th>Predicted score</th><th>Predicted label</th><th>Actual</th><th>Match</th><th>Breakdown reason group</th><th>Actual breakdown reason (ground truth)</th></tr></thead>
+      <thead><tr><th>Horizon</th><th>Category</th><th>Target date</th><th>Predicted score</th><th>Predicted label</th><th>Predicted reason (if it occurs)</th><th>Actual</th><th>Match</th><th>Breakdown reason group</th><th>Actual breakdown reason (ground truth)</th></tr></thead>
       <tbody id="detailBody"></tbody>
     </table>
     <div class="legend">
@@ -116,7 +116,16 @@
       <span><span class="dot" style="background:var(--good)"></span>No breakdown predicted / occurred</span>
       <span><span class="dot" style="background:var(--unknown)"></span>Actual unknown (future date beyond test split, or label masked as unreliable)</span>
     </div>
-    <div class="note">The reason column is the real logged reason/grouping for that target date (e.g. "Bag House / Bag Filter / Dust Collection &mdash; LRS Problem"), shown whenever a breakdown was actually logged that day &mdash; it is ground truth, not a model prediction, and is blank only when no breakdown was logged that day. Up to the top 3 reasons for that day are shown, ranked by logged downtime minutes, regardless of this row's own category. A small grey tag (e.g. "Mechanical") appears on a reason when its real classification differs from this row's electrical/mechanical category &mdash; that happens because the electrical/mechanical target labels used to train the models are defined from overlapping failure-family lists (most families count toward both), so a day can be labeled electrical_breakdown=1 even when the only logged reason that day was mechanical. A dedicated model that predicts the likely reason in advance has not been built yet (see <code>step10_reason_modeling_plan.md</code>).</div>
+    <div class="note">The reason column is the real logged reason/grouping for that target date (e.g. "Bag House / Bag Filter / Dust Collection &mdash; LRS Problem"), shown whenever a breakdown was actually logged that day &mdash; it is ground truth, not a model prediction, and is blank only when no breakdown was logged that day. Up to the top 3 reasons for that day are shown, ranked by logged downtime minutes, regardless of this row's own category. A small grey tag (e.g. "Mechanical") appears on a reason when its real classification differs from this row's electrical/mechanical category &mdash; that happens because the electrical/mechanical target labels used to train the models are defined from overlapping failure-family lists (most families count toward both), so a day can be labeled electrical_breakdown=1 even when the only logged reason that day was mechanical. A dedicated model that predicts the likely reason group in advance is now shown in the "Predicted reason (if it occurs)" column &mdash; a best guess with a confidence score, not ground truth; see the "Reason-prediction model quality" panel below for how weak that model currently is.</div>
+  </div>
+
+  <div class="panel">
+    <h2>Reason-prediction model quality (low confidence &mdash; read the note below)</h2>
+    <table>
+      <thead><tr><th>Category</th><th>Horizon</th><th>Model</th><th>Train n</th><th>Val n</th><th>Test n</th><th>Val macro-F1</th><th>Test macro-F1</th></tr></thead>
+      <tbody id="reasonMetricsBody"></tbody>
+    </table>
+    <div class="note">These are the models behind the new "Predicted reason (if it occurs)" column above: trained only on days a breakdown of that category actually happened, to guess which failure-family GROUP it would most likely be, then scored on every date. Macro-F1 scores here (~0.10&ndash;0.28) are weak &mdash; close to or only modestly better than chance for a 5&ndash;8-class problem &mdash; because there are only a few dozen historical breakdown events per category to learn from, and several failure families have very few examples (rare families are merged into "Other"). Treat the predicted reason as a rough best guess, not a reliable forecast; the confidence % shown next to each prediction reflects this.</div>
   </div>
 
   <div class="panel">
@@ -268,11 +277,29 @@ try {
       .map(r => {
         const horizon = HORIZONS[r[2]], cat = CATS[r[3]], model = MODELS[r[4]], score = r[5], actual = r[6];
         const reasons = r[8] || [];
+        const predReasonGroupIdx = r[9], predReasonConf = r[10];
         const predLabel = score >= 0.5 ? 1 : 0;
         const targetDate = addDays(DATES[di], horizonDays(horizon));
-        return { horizon, cat, model, score, actual, predLabel, targetDate, reasons };
+        return { horizon, cat, model, score, actual, predLabel, targetDate, reasons, predReasonGroupIdx, predReasonConf };
       })
       .filter(r => r.cat !== 'any');
+
+    // Predicted (not ground-truth) reason group, for EVERY row -- "if a
+    // breakdown occurs, which failure-family group is it most likely to be" --
+    // with its confidence. This is a genuinely hard, small-sample model
+    // (see reason_model_metrics in the bundle), so it's always shown with an
+    // explicit confidence % and low-confidence styling, never presented as a
+    // sure thing the way the ground-truth reason columns are.
+    function predictedReasonHtml(predReasonGroupIdx, predReasonConf) {
+      if (predReasonGroupIdx === null || predReasonGroupIdx === undefined) {
+        return '<span style="color:var(--muted)">&mdash;</span>';
+      }
+      const group = REASON_GROUPS[predReasonGroupIdx];
+      const pct = (predReasonConf * 100).toFixed(0);
+      const low = predReasonConf < 0.3;
+      return `<div style="${low ? 'opacity:0.75;' : ''}"><strong>${group}</strong> `
+        + `<span class="badge badge-unk" title="Model confidence this is the most likely reason group, if a breakdown occurs">${pct}% confidence</span></div>`;
+    }
 
     const ranked = [...expanded].sort((a, b) => b.score - a.score).slice(0, 3);
     const top3Container = document.getElementById('top3Container');
@@ -288,6 +315,7 @@ try {
           <div>
             <div class="top3-label">${r.cat.toUpperCase()} breakdown risk &mdash; ${horizonLabel(r.horizon)}</div>
             <div class="top3-sub">target date ${r.targetDate} &middot; model: ${r.model}</div>
+            <div class="top3-sub">predicted reason (if it occurs): ${predictedReasonHtml(r.predReasonGroupIdx, r.predReasonConf)}</div>
             ${r.reasons && r.reasons.length ? `<div class="top3-sub">breakdown reason group: ${reasonGroupHtml(r.reasons, r.cat)}</div><div class="top3-sub">actual reason: ${reasonDetailHtml(r.reasons, r.cat)}</div>` : ''}
           </div>
           <div class="score-bar-wrap">
@@ -318,6 +346,7 @@ try {
           </div>
         </td>
         <td>${r.predLabel === 1 ? '<span class="badge badge-pos">breakdown</span>' : '<span class="badge badge-neg">none</span>'}</td>
+        <td style="font-size:12px;">${predictedReasonHtml(r.predReasonGroupIdx, r.predReasonConf)}</td>
         <td>${actualBadge(r.actual)}</td>
         <td>${matchBadge(r.predLabel, r.actual)}</td>
         <td style="font-size:12px;">${reasonGroupHtml(r.reasons, r.cat)}</td>
@@ -346,6 +375,31 @@ try {
       mbody.appendChild(tr);
     });
   }
+
+  // Reason-model quality table is static (not date-specific) -- render once.
+  (function renderReasonMetrics() {
+    const rmbody = document.getElementById('reasonMetricsBody');
+    if (!rmbody) return;
+    const hOrder = { 'Day_Plus_1': 1, 'Day_Plus_2': 2, 'Day_Plus_3': 3 };
+    const cOrder = { 'electrical': 1, 'mechanical': 2, 'any': 3 };
+    const reasonMetrics = bundle.reason_model_metrics || [];
+    const rsorted = [...reasonMetrics].sort((a, b) => (hOrder[a.horizon]-hOrder[b.horizon]) || (cOrder[a.category]-cOrder[b.category]));
+    rsorted.forEach(r => {
+      const tr = document.createElement('tr');
+      const fmt = v => (v === null || v === undefined) ? '&mdash;' : v.toFixed(3);
+      tr.innerHTML = `
+        <td>${r.category}</td>
+        <td>${horizonLabel(r.horizon)}</td>
+        <td>${r.model_used}</td>
+        <td>${r.n_train}</td>
+        <td>${r.n_val}</td>
+        <td>${r.n_test}</td>
+        <td>${fmt(r.val_macro_f1)}</td>
+        <td>${fmt(r.test_macro_f1)}</td>
+      `;
+      rmbody.appendChild(tr);
+    });
+  })();
 
   machineSelect.addEventListener('change', () => { refreshDates(); render(); });
   dateSelect.addEventListener('change', render);
