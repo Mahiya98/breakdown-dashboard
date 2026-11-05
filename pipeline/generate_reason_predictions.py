@@ -41,17 +41,17 @@ def select_features_multiclass(X_train, y_train, X_val, X_test, k=SELECT_K):
     cols = X_train.columns[kbest.get_support()]
     return X_train[cols], X_val[cols], X_test[cols], list(cols)
 
-MIN_CLASS_COUNT = 8  # families with fewer total occurrences than this collapse into "Other"
+# MIN_CLASS_COUNT is now set per-loop, not global
 HORIZONS = (1, 2, 3)
 CATEGORY_FAMILIES = {"electrical": LEVEL2_ELECTRICAL_FAMILIES, "mechanical": LEVEL2_MECHANICAL_FAMILIES}
 
 CANDIDATES = {
     "Logistic Regression": lambda: LogisticRegression(penalty="l2", C=1.0, max_iter=2000,
-                                                        class_weight="balanced", random_state=RANDOM_SEED),
-    "Random Forest": lambda: RandomForestClassifier(n_estimators=300, max_depth=5, min_samples_leaf=3,
                                                        class_weight="balanced", random_state=RANDOM_SEED),
-    "Extra Trees": lambda: ExtraTreesClassifier(n_estimators=300, max_depth=5, min_samples_leaf=3,
-                                                  class_weight="balanced", random_state=RANDOM_SEED),
+    "Random Forest": lambda: RandomForestClassifier(n_estimators=500, max_depth=None, min_samples_leaf=1,
+                                                    class_weight="balanced_subsample", random_state=RANDOM_SEED),
+    "Extra Trees": lambda: ExtraTreesClassifier(n_estimators=500, max_depth=None, min_samples_leaf=1,
+                                                class_weight="balanced_subsample", random_state=RANDOM_SEED),
 }
 
 
@@ -87,6 +87,7 @@ def main():
 
     for category, families in CATEGORY_FAMILIES.items():
         for h in HORIZONS:
+            MIN_CLASS_COUNT = 12  # Was 8; increasing to merge more rare classes
             occ_col = f"Day_Plus_{h}__A_{category}_breakdown"
             occurred = df[occ_col]
             raw_labels = df.apply(lambda r: winning_family(r, h, families), axis=1)
@@ -98,9 +99,11 @@ def main():
             val_pos = pos_mask & val_mask
             test_pos = pos_mask & test_mask
 
+            MIN_CLASS_COUNT = 12  # Was 8; increasing to merge more rare classes
+            labels = collapse_rare(labels[pos_mask], MIN_CLASS_COUNT)
             n_train, n_val, n_test = train_pos.sum(), val_pos.sum(), test_pos.sum()
             print(f"{category}/Day+{h}: train={n_train} val={n_val} test={n_test} "
-                  f"classes={sorted(labels[pos_mask].unique())}")
+                  f"COLLAPSED to {sorted(labels[pos_mask].unique())}")
 
             if n_train < 10 or labels[train_pos].nunique() < 2:
                 print(f"  -> skipping (too few training rows / classes) for {category}/Day+{h}")
