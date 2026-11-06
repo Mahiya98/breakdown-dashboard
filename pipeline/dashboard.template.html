@@ -102,7 +102,7 @@
   <div class="panel">
     <h2>Top risk categories for the selected date (ranked by predicted score)</h2>
     <div id="top3Container"></div>
-    <div class="note">Ranking is over the 2 breakdown categories shown on this dashboard: electrical and mechanical. A third, "any-eligible" model (the union of the two, and the originally validated target) was also trained and is still scored internally, but is hidden here since only electrical/mechanical breakdowns are wanted on this view. A predicted failure-family group (if a breakdown occurs) is now shown per row below with a confidence score &mdash; see the "Reason-prediction model quality" note further down for its (low) reliability. Detailed-reason-level ranking (the finer-grained "top 3 specific reasons", as opposed to the broader failure-family group) is still not available.</div>
+    <div class="note">Ranking is over all 3 breakdown categories: <b>any</b> (the combined/originally validated target, electrical&nbsp;&cup;&nbsp;mechanical), <b>electrical</b>, and <b>mechanical</b>. The "any" category was temporarily hidden on this view and has been re-added. A predicted failure-family group (if a breakdown occurs) is shown per row below with a confidence score &mdash; see the "Reason-prediction model quality" note further down for its (low) reliability; note the reason-group models only exist for electrical/mechanical, so "any" rows show no predicted reason. Detailed-reason-level ranking (the finer-grained "top 3 specific reasons", as opposed to the broader failure-family group) is still not available.</div>
   </div>
 
   <div class="panel">
@@ -269,10 +269,10 @@ try {
       }).join('');
     }
 
-    // 'any' is the union of electrical+mechanical and was only the originally
-    // validated target -- the dashboard shows electrical and mechanical only,
-    // per the operating team's request, so 'any' rows are dropped here before
-    // anything is ranked, tabled, or counted.
+    // 'any' is the union of electrical+mechanical and was the originally
+    // validated target. It was temporarily hidden on this view, then
+    // re-added by request, so all three categories (any/electrical/mechanical)
+    // are shown here.
     const expanded = sel
       .map(r => {
         const horizon = HORIZONS[r[2]], cat = CATS[r[3]], model = MODELS[r[4]], score = r[5], actual = r[6];
@@ -281,8 +281,7 @@ try {
         const predLabel = score >= 0.5 ? 1 : 0;
         const targetDate = addDays(DATES[di], horizonDays(horizon));
         return { horizon, cat, model, score, actual, predLabel, targetDate, reasons, predReasonGroupIdx, predReasonConf };
-      })
-      .filter(r => r.cat !== 'any');
+      });
 
     // Predicted (not ground-truth) reason group, for EVERY row -- "if a
     // breakdown occurs, which failure-family group is it most likely to be" --
@@ -329,7 +328,7 @@ try {
     }
 
     const hOrder = { 'Day_Plus_1': 1, 'Day_Plus_2': 2, 'Day_Plus_3': 3 };
-    const cOrder = { 'electrical': 1, 'mechanical': 2, 'any': 3 };
+    const cOrder = { 'any': 1, 'electrical': 2, 'mechanical': 3 };
     const sorted = [...expanded].sort((a, b) => (hOrder[a.horizon]-hOrder[b.horizon]) || (cOrder[a.cat]-cOrder[b.cat]));
     const body = document.getElementById('detailBody');
     body.innerHTML = '';
@@ -381,7 +380,7 @@ try {
     const rmbody = document.getElementById('reasonMetricsBody');
     if (!rmbody) return;
     const hOrder = { 'Day_Plus_1': 1, 'Day_Plus_2': 2, 'Day_Plus_3': 3 };
-    const cOrder = { 'electrical': 1, 'mechanical': 2, 'any': 3 };
+    const cOrder = { 'any': 1, 'electrical': 2, 'mechanical': 3 };
     const reasonMetrics = bundle.reason_model_metrics || [];
     const rsorted = [...reasonMetrics].sort((a, b) => (hOrder[a.horizon]-hOrder[b.horizon]) || (cOrder[a.category]-cOrder[b.category]));
     rsorted.forEach(r => {
